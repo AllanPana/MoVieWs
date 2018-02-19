@@ -1,4 +1,4 @@
-package com.example.cristina.moviews.base;
+package com.example.allan.moviews.base;
 
 /**
  * Created by Allan Pana on 19/02/18.

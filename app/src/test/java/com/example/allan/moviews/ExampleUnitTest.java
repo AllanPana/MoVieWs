@@ -1,4 +1,4 @@
-package com.example.cristina.moviews;
+package com.example.allan.moviews;
 
 import org.junit.Test;
 

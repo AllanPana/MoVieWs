@@ -1,4 +1,4 @@
-package com.example.cristina.moviews.base;
+package com.example.allan.moviews.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
