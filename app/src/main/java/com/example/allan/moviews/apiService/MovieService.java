@@ -7,9 +7,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
- * Created by cristina on 19/02/18.
+ * Created by Allan Pana on 19/02/18.
  *
  */
 
@@ -22,8 +23,14 @@ public class MovieService {
      * Interface containing the Endpoint method used to query the MovieDB API
      */
     public interface MovieApi {
-        @GET("movie/popular")
-        Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey);
+        /**
+         *
+         * @param url end point url (ie. movie/top_rated)
+         * @param apiKey API key from MovieDB
+         * @return
+         */
+        @GET()
+        Call<MovieResponse> getTopRatedMovies(@Url String url, @Query("api_key") String apiKey);
     }
 
 

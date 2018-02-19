@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+
+/**
+ * Created by Allan Pana on 19/02/18.
+ *
+ */
 public class MovieResponse {
 
     @SerializedName("page")

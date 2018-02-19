@@ -21,7 +21,8 @@ import static com.example.allan.moviews.apiService.MovieService.API_KEY;
 public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
     private MovieService movieService;
-    List<MovieItem> movies = new ArrayList<>();
+    private static final String TOP_RATED = "movie/top_rated";
+    private static final String MOST_POPULAR = "movie/popular";
 
     public MainPresenter() {
         this.movieService = new MovieService();
@@ -30,7 +31,7 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
     protected void setMovieData(){
 
 //        movieService.getMovieApi().getTopRatedMovies(MovieService.API_KEY);
-        Call<MovieResponse> movieResponseCall = movieService.getMovieApi().getTopRatedMovies(API_KEY);
+        Call<MovieResponse> movieResponseCall = movieService.getMovieApi().getTopRatedMovies(TOP_RATED, API_KEY);
         movieResponseCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
@@ -39,7 +40,7 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-
+                //todo
             }
         });
     }

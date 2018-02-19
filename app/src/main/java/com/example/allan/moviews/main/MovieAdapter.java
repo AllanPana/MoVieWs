@@ -24,12 +24,14 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
+    private MovieOnItemClickListener movieOnItemClickListener;
     private List<MovieItem> movies;
     public static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w185//";
 
 
-    public MovieAdapter(List<MovieItem> movies) {
+    public MovieAdapter(List<MovieItem> movies, MovieOnItemClickListener movieOnItemClickListener) {
         this.movies = movies;
+        this.movieOnItemClickListener = movieOnItemClickListener;
     }
 
     @Override
@@ -84,9 +86,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "allan", Toast.LENGTH_LONG).show();
+                    movieOnItemClickListener.onMovieItemClick(getAdapterPosition());
                     //todo
                 }
             });
         }
+    }
+
+    interface MovieOnItemClickListener{
+        void onMovieItemClick(int position);
     }
 }

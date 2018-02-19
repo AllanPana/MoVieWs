@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.base.BaseActivity;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.settings.SettingsActivity;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import butterknife.BindView;
  * Created by Allan Pana on 19/02/18.
  * 
  */
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView, MovieAdapter.MovieOnItemClickListener {
 
     private MainPresenter mainPresenter;
     @BindView(R.id.rv_movie) RecyclerView recyclerView;
@@ -54,6 +55,12 @@ public class MainActivity extends BaseActivity implements MainView {
         Log.e("allan", results.get(0).getTitle());
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(null);
-        recyclerView.setAdapter(new MovieAdapter(results));
+        recyclerView.setAdapter(new MovieAdapter(results, this));
+    }
+
+    @Override
+    public void onMovieItemClick(int position) {
+        //todo
+        startActivity(SettingsActivity.getIntent(this));
     }
 }
