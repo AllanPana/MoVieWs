@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MoVieWs</string>
+
+    <!--strings use by menu xml-->
+    <string name="menu_movie_popular">Popular</string>
+    <string name="menu_movie_top_rated">Top Rated</string>
+    <string name="menu_sort_movie_title">Sort movie by</string>
 </resources>

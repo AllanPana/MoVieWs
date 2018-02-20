@@ -2,11 +2,7 @@ package com.example.allan.moviews.main;
 
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
-import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.model.MovieResponse;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +19,7 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
     private MovieService movieService;
     private static final String TOP_RATED = "movie/top_rated";
     private static final String MOST_POPULAR = "movie/popular";
+    private static final String UPCOMING = "movie/upcoming";
 
     public MainPresenter() {
         this.movieService = new MovieService();
@@ -30,8 +27,9 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
     protected void setMovieData(){
 
-//        movieService.getMovieApi().getTopRatedMovies(MovieService.API_KEY);
-        Call<MovieResponse> movieResponseCall = movieService.getMovieApi().getTopRatedMovies(TOP_RATED, API_KEY);
+//        movieService.getMovieApi().getMovieResponse(MovieService.API_KEY);
+        Call<MovieResponse> movieResponseCall = movieService.getMovieApi()
+                .getMovieResponse(MOST_POPULAR, API_KEY);
         movieResponseCall.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {

@@ -30,7 +30,7 @@ public class MovieService {
          * @return
          */
         @GET()
-        Call<MovieResponse> getTopRatedMovies(@Url String url, @Query("api_key") String apiKey);
+        Call<MovieResponse> getMovieResponse(@Url String url, @Query("api_key") String apiKey);
     }
 
 
