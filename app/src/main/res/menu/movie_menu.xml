@@ -4,14 +4,15 @@
 
     <item android:title="@string/menu_sort_movie_title">
         <menu>
-            <group android:id="@+id/action_movie_sort">
+            <group android:id="@+id/action_movie_sort"
+                android:checkableBehavior="single">
                 <item android:id="@+id/action_movie_popular"
                     android:orderInCategory="100"
                     android:title="@string/menu_movie_popular"
                     app:showAsAction="never"/>
 
                 <item android:id="@+id/action_movie_top_rated"
-                    android:orderInCategory="100"
+                    android:orderInCategory="200"
                     android:title="@string/menu_movie_top_rated"
                     app:showAsAction="never"/>
             </group>

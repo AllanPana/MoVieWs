@@ -46,6 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         String imageUrl = IMAGE_URL_BASE_PATH + movie.getPosterPath();
 
         holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(600, 300);
+        holder.ivMoviePoster.setContentDescription(movie.getTitle());
 
         Picasso.with(holder.itemView.getContext()).load(imageUrl)
                 .placeholder(android.R.drawable.sym_def_app_icon)
@@ -85,7 +86,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             ivMoviePoster.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "allan", Toast.LENGTH_LONG).show();
+                    Toast.makeText(v.getContext(), movies.get(getAdapterPosition()).getTitle(), Toast.LENGTH_LONG).show();
                     movieOnItemClickListener.onMovieItemClick(getAdapterPosition());
                     //todo
                 }
