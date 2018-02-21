@@ -47,12 +47,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         MovieItem movie = movies.get(position);
         String imageUrl = IMAGE_URL_BASE_PATH + movie.getPosterPath();
 
-        //holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(500, 450);
+        //holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(700, 680);
         holder.ivMoviePoster.setContentDescription(movie.getTitle());
-
         Picasso.with(holder.itemView.getContext()).load(imageUrl)
-                .placeholder(android.R.drawable.sym_def_app_icon)
-                .error(android.R.drawable.sym_def_app_icon)
                 .into(holder.ivMoviePoster);
 
     }

@@ -2,6 +2,7 @@ package com.example.allan.moviews.main;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -35,14 +36,15 @@ public class MainActivity extends BaseActivity implements MainView,
     private MovieAdapter movieAdapter;
     private MoviePrefsHelper moviePrefsHelper;
     private MenuItem popularMovieItem;
-    @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
+    //@BindView(R.id.pb_loading_indicator) ProgressBar progressBar;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState) {
-
-        mainPresenter.setMovieData();
+        SharedPreferences sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
+        moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -52,21 +54,14 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void setPresenter() {
-        SharedPreferences sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
-        moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         mainPresenter = new MainPresenter(new MovieService(), moviePrefsHelper);
         mainPresenter.attachView(this);
+        mainPresenter.setMovieData(moviePrefsHelper.getSortMovie());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_menu, menu);
-        popularMovieItem = menu.findItem(R.id.action_movie_popular);
-        if (moviePrefsHelper.getSortMovie().equals(MOST_POPULAR)){
-            popularMovieItem.setChecked(true);
-        }
-        Log.e("menu", popularMovieItem.getTitle().toString());
         return true;
     }
 
@@ -74,34 +69,32 @@ public class MainActivity extends BaseActivity implements MainView,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
-        String movieUrl = "";
         if (itemID == R.id.action_movie_popular) {
-            movieUrl = MOST_POPULAR;
+            mainPresenter.setMovieUrl(MOST_POPULAR);
         } else if (itemID == R.id.action_movie_top_rated) {
-            movieUrl = TOP_RATED;
+            mainPresenter.setMovieUrl(TOP_RATED);
         }
-
-        item.setChecked(true);
-        mainPresenter.setMovieUrl(movieUrl);
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void showProgress() {
-        mLoadingIndicator.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
+        /*progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);*/
     }
 
     @Override
     public void hideProgress() {
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);
+        /*progressBar.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);*/
     }
 
     @Override
     public void showListOfMovies(List<MovieItem> results) {
         movieAdapter = new MovieAdapter(results, this);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(movieAdapter);
     }
@@ -114,8 +107,6 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        mainPresenter.setMovieData();
-        //movieAdapter.notifyDataSetChanged();
-
+        mainPresenter.setMovieData(moviePrefsHelper.getSortMovie());
     }
 }

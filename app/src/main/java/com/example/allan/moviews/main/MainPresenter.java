@@ -1,5 +1,7 @@
 package com.example.allan.moviews.main;
 
+import android.util.Log;
+
 import com.example.allan.moviews.BuildConfig;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
@@ -15,22 +17,21 @@ import retrofit2.Response;
  * allan.pana74@gmail.com
  */
 
-public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
+class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
+    private static final String LOG_TAG = MainPresenter.class.getSimpleName();
     private MovieService movieService;
     private MoviePrefsHelper moviePrefsHelper;
 
-    public MainPresenter(MovieService movieService, MoviePrefsHelper moviePrefsHelper) {
+    MainPresenter(MovieService movieService, MoviePrefsHelper moviePrefsHelper) {
         this.movieService = movieService;
         this.moviePrefsHelper = moviePrefsHelper;
     }
 
-    protected void setMovieData(){
-
-        String url = moviePrefsHelper.getSortMovie();
-        if (url == null || url.equals("")){
-            return;
-        }
+    /**
+     * Set the movie data to be display on the recyclerview
+     */
+    void setMovieData(String url){
         getmMvpView().showProgress();
         Call<MovieResponse> movieResponseCall = movieService.getMovieApi()
                 .getMovieResponse(url, BuildConfig.MOVIE_DB_API_KEY);
@@ -43,8 +44,8 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                //todo
                 getmMvpView().hideProgress();
+                Log.e(LOG_TAG, t.getMessage());
             }
         });
     }
@@ -54,8 +55,10 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
      *
      * @param movieUrl The url string {top_rated or popular}
      */
-    public void setMovieUrl(String movieUrl) {
-
+    void setMovieUrl(String movieUrl) {
+        if (movieUrl == null || movieUrl.equals("")){
+            return;
+        }
         //set the url from sharedPref
         moviePrefsHelper.setSortMovie(movieUrl);
     }
