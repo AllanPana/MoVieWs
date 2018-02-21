@@ -9,6 +9,7 @@ import butterknife.Unbinder;
 
 /**
  * Created by Allan Pana on 19/02/18.
+ * allan.pana74@gmail.com
  *
  * This class is the base Acivity to be extend by all Activity in this app
  */

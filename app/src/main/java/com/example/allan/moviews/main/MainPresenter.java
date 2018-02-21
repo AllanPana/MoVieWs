@@ -13,15 +13,13 @@ import static com.example.allan.moviews.apiService.MovieService.API_KEY;
 
 /**
  * Created by Allan Pana on 19/02/18.
+ * allan.pana74@gmail.com
  */
 
 public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
     private MovieService movieService;
     private MoviePrefsHelper moviePrefsHelper;
-    private static final String TOP_RATED = "movie/top_rated";
-    private static final String MOST_POPULAR = "movie/popular";
-    private static final String UPCOMING = "movie/upcoming";
 
     public MainPresenter(MovieService movieService, MoviePrefsHelper moviePrefsHelper) {
         this.movieService = movieService;
@@ -53,8 +51,13 @@ public class MainPresenter <T extends MainView>  extends BasePresenter<T> {
     }
 
 
-
+    /**
+     *
+     * @param movieUrl The url string {top_rated or popular}
+     */
     public void setMovieUrl(String movieUrl) {
+
+        //set the url from sharedPref
         moviePrefsHelper.setSortMovie(movieUrl);
     }
 }

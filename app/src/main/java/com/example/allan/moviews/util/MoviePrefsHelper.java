@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 /**
  * Created by Allan Pana on 20/02/18.
+ * allan.pana74@gmail.com
  */
 
 public class MoviePrefsHelper  {

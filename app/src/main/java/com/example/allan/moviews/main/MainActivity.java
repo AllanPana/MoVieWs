@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -24,6 +23,7 @@ import butterknife.BindView;
 
 /**
  * Created by Allan Pana on 19/02/18.
+ * allan.pana74@gmail.com
  */
 public class MainActivity extends BaseActivity implements MainView,
         MovieAdapter.MovieOnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -33,12 +33,15 @@ public class MainActivity extends BaseActivity implements MainView,
     private static final String UPCOMING = "movie/upcoming";
     private MainPresenter mainPresenter;
     private MovieAdapter movieAdapter;
+    private MoviePrefsHelper moviePrefsHelper;
+    private MenuItem popularMovieItem;
     @BindView(R.id.pb_loading_indicator) ProgressBar mLoadingIndicator;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState) {
+
         mainPresenter.setMovieData();
     }
 
@@ -50,7 +53,7 @@ public class MainActivity extends BaseActivity implements MainView,
     @Override
     public void setPresenter() {
         SharedPreferences sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
-        MoviePrefsHelper moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
+        moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         mainPresenter = new MainPresenter(new MovieService(), moviePrefsHelper);
         mainPresenter.attachView(this);
@@ -59,6 +62,11 @@ public class MainActivity extends BaseActivity implements MainView,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_menu, menu);
+        popularMovieItem = menu.findItem(R.id.action_movie_popular);
+        if (moviePrefsHelper.getSortMovie().equals(MOST_POPULAR)){
+            popularMovieItem.setChecked(true);
+        }
+        Log.e("menu", popularMovieItem.getTitle().toString());
         return true;
     }
 
@@ -69,10 +77,8 @@ public class MainActivity extends BaseActivity implements MainView,
         String movieUrl = "";
         if (itemID == R.id.action_movie_popular) {
             movieUrl = MOST_POPULAR;
-            Log.e("allan", item.getTitle().toString());
         } else if (itemID == R.id.action_movie_top_rated) {
             movieUrl = TOP_RATED;
-            Log.e("allan", item.getTitle().toString());
         }
 
         item.setChecked(true);
@@ -94,16 +100,15 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void showListOfMovies(List<MovieItem> results) {
-        Log.e("allan", results.get(0).getTitle());
         movieAdapter = new MovieAdapter(results, this);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(movieAdapter);
     }
 
     @Override
     public void onMovieItemClick(int position) {
-        //todo
+        //todo create an intent for details activity
 
     }
 

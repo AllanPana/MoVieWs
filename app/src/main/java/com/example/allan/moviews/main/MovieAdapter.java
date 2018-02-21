@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Allan Pana on 19/02/18.
+ * allan.pana74@gmail.com
+ *
  *  A Recyclerview Adapter for the main activity class
  */
 
@@ -45,7 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         MovieItem movie = movies.get(position);
         String imageUrl = IMAGE_URL_BASE_PATH + movie.getPosterPath();
 
-        holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(600, 300);
+        //holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(500, 450);
         holder.ivMoviePoster.setContentDescription(movie.getTitle());
 
         Picasso.with(holder.itemView.getContext()).load(imageUrl)
@@ -62,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
 
     /**
-     * Use to set the height of imageview randomly
+     * Use by StaggeredGridLayoutManager to set the height of imageview randomly
      * @param max maximum possible height of the imageview
      * @param min minimum possible height of the imageview
      * @return

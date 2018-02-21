@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Allan Pana on 19/02/18.
+ * allan.pana74@gmail.com
  *
  */
 public class MovieResponse {
