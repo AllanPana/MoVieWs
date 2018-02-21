@@ -18,7 +18,6 @@ import retrofit2.http.Url;
 public class MovieService {
 
     private static final String BASE_URL = "http://api.themoviedb.org/3/";
-    public static final String API_KEY = "67bd9236cf89d9b21b9fa775586c7453";
 
     /**
      * Interface containing the Endpoint method used to query the MovieDB API
