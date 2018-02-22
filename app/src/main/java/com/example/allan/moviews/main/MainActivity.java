@@ -13,6 +13,7 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseActivity;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.movieDetail.MovieDetailActivity;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
 import java.util.List;
@@ -121,7 +122,8 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void onMovieItemClick(int position) {
-        //todo create an intent for details activity
+        startActivity( MovieDetailActivity.getIntent(MainActivity.this));
+
 
     }
 
