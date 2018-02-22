@@ -34,7 +34,8 @@ public class MainActivity extends BaseActivity implements MainView,
     private MainPresenter mainPresenter;
     private MoviePrefsHelper moviePrefsHelper;
     private SharedPreferences sharedPreferences;
-    @BindView(R.id.pb_loading_indicator) ProgressBar progressBar;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar progressBar;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
 
@@ -43,6 +44,8 @@ public class MainActivity extends BaseActivity implements MainView,
         sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
         moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+
     }
 
     @Override
@@ -55,7 +58,9 @@ public class MainActivity extends BaseActivity implements MainView,
         mainPresenter = new MainPresenter(new MovieService(), moviePrefsHelper);
         mainPresenter.attachView(this);
         mainPresenter.setMovieData(moviePrefsHelper.getSortMovie());
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,6 +107,13 @@ public class MainActivity extends BaseActivity implements MainView,
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(movieAdapter);
+        mainPresenter.setToolBarTitle(moviePrefsHelper.getSortMovie());
+
+    }
+
+    @Override
+    public void displayToolBarTitle(String toolBarTitle) {
+        getSupportActionBar().setTitle(toolBarTitle);
     }
 
     @Override
@@ -110,6 +122,7 @@ public class MainActivity extends BaseActivity implements MainView,
 
     }
 
+    //Listerner for the SharedPreference when preference value changed
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         mainPresenter.setMovieData(moviePrefsHelper.getSortMovie());

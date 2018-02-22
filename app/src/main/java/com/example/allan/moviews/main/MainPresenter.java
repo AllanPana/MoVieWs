@@ -20,6 +20,7 @@ import retrofit2.Response;
 class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
     private static final String LOG_TAG = MainPresenter.class.getSimpleName();
+    private static final String REPLACE_TOOL_BAR_TITLE = "movie/";
     private MovieService movieService;
     private MoviePrefsHelper moviePrefsHelper;
 
@@ -52,7 +53,17 @@ class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
 
     /**
-     *
+     * Set the toolbar title for every sort of movie to be display
+     * @param title The title of the toolbar to set
+     */
+    void setToolBarTitle(String title){
+        getmMvpView().displayToolBarTitle
+                (title.replace(REPLACE_TOOL_BAR_TITLE, "").toUpperCase());
+    }
+
+
+    /**
+     * Set the url of the movie
      * @param movieUrl The url string {top_rated or popular}
      */
     void setMovieUrl(String movieUrl) {

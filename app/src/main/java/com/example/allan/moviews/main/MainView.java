@@ -12,5 +12,15 @@ import java.util.List;
 
 public interface MainView extends MVPView {
 
+    /**
+     *
+     * @param results list of movie from Json response
+     */
     void showListOfMovies(List<MovieItem> results);
+
+    /**
+     *
+     * @param toolBarTitle The title of the toolbar to be display
+     */
+    void displayToolBarTitle(String toolBarTitle);
 }
