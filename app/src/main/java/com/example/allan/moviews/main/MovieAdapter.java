@@ -26,12 +26,13 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder>{
 
+    //private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     private MovieOnItemClickListener movieOnItemClickListener;
     private List<MovieItem> movies;
-    public static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w185//";
+    private static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w185//";
 
 
-    public MovieAdapter(List<MovieItem> movies, MovieOnItemClickListener movieOnItemClickListener) {
+    MovieAdapter(List<MovieItem> movies, MovieOnItemClickListener movieOnItemClickListener) {
         this.movies = movies;
         this.movieOnItemClickListener = movieOnItemClickListener;
     }
@@ -64,7 +65,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      * Use by StaggeredGridLayoutManager to set the height of imageview randomly
      * @param max maximum possible height of the imageview
      * @param min minimum possible height of the imageview
-     * @return
+     * @return the random height  to be used in image in staggeredlayoutmanager
      */
     protected int getRandomIntInRange(int max, int min){
         return new Random().nextInt((max-min)+min)+min;
@@ -78,7 +79,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @BindView(R.id.iv_movie_poster) ImageView ivMoviePoster;
 
-        public MovieViewHolder(View itemView) {
+        MovieViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 

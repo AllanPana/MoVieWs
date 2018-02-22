@@ -4,8 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,20 +27,20 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity implements MainView,
         MovieAdapter.MovieOnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
+    //private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String TOP_RATED = "movie/top_rated";
     private static final String MOST_POPULAR = "movie/popular";
-    private static final String UPCOMING = "movie/upcoming";
+    //private static final String UPCOMING = "movie/upcoming";
     private MainPresenter mainPresenter;
-    private MovieAdapter movieAdapter;
     private MoviePrefsHelper moviePrefsHelper;
-    private MenuItem popularMovieItem;
-    //@BindView(R.id.pb_loading_indicator) ProgressBar progressBar;
+    private SharedPreferences sharedPreferences;
+    @BindView(R.id.pb_loading_indicator) ProgressBar progressBar;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
         moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
@@ -79,19 +77,26 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void showProgress() {
-        /*progressBar.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);*/
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void hideProgress() {
-        /*progressBar.setVisibility(View.INVISIBLE);
-        recyclerView.setVisibility(View.VISIBLE);*/
+        progressBar.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        mainPresenter.detachView();
     }
 
     @Override
     public void showListOfMovies(List<MovieItem> results) {
-        movieAdapter = new MovieAdapter(results, this);
+        MovieAdapter movieAdapter = new MovieAdapter(results, this);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
