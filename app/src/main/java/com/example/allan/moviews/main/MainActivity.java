@@ -113,7 +113,10 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void displayToolBarTitle(String toolBarTitle) {
-        getSupportActionBar().setTitle(toolBarTitle);
+        if (toolBarTitle != null){
+            getSupportActionBar().setTitle(toolBarTitle);
+        }
+
     }
 
     @Override
