@@ -5,8 +5,11 @@ import android.util.Log;
 import com.example.allan.moviews.BuildConfig;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
+import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.model.MovieResponse;
 import com.example.allan.moviews.util.MoviePrefsHelper;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +26,7 @@ class MainPresenter <T extends MainView>  extends BasePresenter<T> {
     private static final String REPLACE_TOOL_BAR_TITLE = "movie/";
     private MovieService movieService;
     private MoviePrefsHelper moviePrefsHelper;
+    private List<MovieItem> movieItems;
 
     MainPresenter(MovieService movieService, MoviePrefsHelper moviePrefsHelper) {
         this.movieService = movieService;
@@ -40,7 +44,8 @@ class MainPresenter <T extends MainView>  extends BasePresenter<T> {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 getmMvpView().hideProgress();
-                getmMvpView().showListOfMovies(response.body().getResults());
+                movieItems = response.body().getResults();
+                getmMvpView().showListOfMovies(movieItems);
             }
 
             @Override
@@ -53,12 +58,22 @@ class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
 
     /**
-     * Set the toolbar title for every sort of movie to be display
+     * Set the toolbar for every sort of movie to be display
      * @param title The title of the toolbar to set
      */
-    void setToolBarTitle(String title){
-        getmMvpView().displayToolBarTitle
+    void setToolBar(String title){
+        getmMvpView().displayToolBar
                 (title.replace(REPLACE_TOOL_BAR_TITLE, "").toUpperCase());
+    }
+
+
+    /**
+     *
+     * @param position item index in the list of movies
+     * @return Movie item from the list of movies
+     */
+    MovieItem getSelectedMovie(int position){
+            return movieItems.get(position);
     }
 
 

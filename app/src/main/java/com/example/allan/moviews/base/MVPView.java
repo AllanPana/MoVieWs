@@ -14,4 +14,10 @@ public interface MVPView {
     void showProgress();
 
     void hideProgress();
+
+    /**
+     *
+     * @param toolBarTitle The title of the toolbar to be display
+     */
+    void displayToolBar(String toolBarTitle);
 }

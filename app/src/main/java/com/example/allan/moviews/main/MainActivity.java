@@ -108,12 +108,12 @@ public class MainActivity extends BaseActivity implements MainView,
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(movieAdapter);
-        mainPresenter.setToolBarTitle(moviePrefsHelper.getSortMovie());
+        mainPresenter.setToolBar(moviePrefsHelper.getSortMovie());
 
     }
 
     @Override
-    public void displayToolBarTitle(String toolBarTitle) {
+    public void displayToolBar(String toolBarTitle) {
         if (toolBarTitle != null){
             getSupportActionBar().setTitle(toolBarTitle);
         }
@@ -122,7 +122,8 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void onMovieItemClick(int position) {
-        startActivity( MovieDetailActivity.getIntent(MainActivity.this));
+        startActivity( MovieDetailActivity
+                .getIntent(MainActivity.this, mainPresenter.getSelectedMovie(position)));
 
 
     }

@@ -18,9 +18,5 @@ public interface MainView extends MVPView {
      */
     void showListOfMovies(List<MovieItem> results);
 
-    /**
-     *
-     * @param toolBarTitle The title of the toolbar to be display
-     */
-    void displayToolBarTitle(String toolBarTitle);
+
 }

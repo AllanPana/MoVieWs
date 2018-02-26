@@ -23,13 +23,24 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
+        View view = inflater.inflate(getFragmentLayoutId(), container, false);
         mUnbinder = ButterKnife.bind(this, view);
+        onViewCreated();
         return view;
     }
 
+    /**
+     * To be implemented in every Child Fragment
+     */
+    public abstract void onViewCreated();
+
+
+    /**
+     *
+     * @return the res layout id
+     */
     @LayoutRes
-    public abstract int getLayoutId();
+    public abstract int getFragmentLayoutId();
 
     @Override
     public void onDestroyView() {
