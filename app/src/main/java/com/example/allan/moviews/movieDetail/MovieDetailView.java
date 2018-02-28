@@ -9,5 +9,5 @@ import com.example.allan.moviews.base.MVPView;
 
 interface MovieDetailView extends MVPView {
 
-    void addFragment();
+
 }

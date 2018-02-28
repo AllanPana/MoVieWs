@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +40,7 @@ public class MainActivity extends BaseActivity implements MainView,
     ProgressBar progressBar;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState) {
@@ -115,8 +117,10 @@ public class MainActivity extends BaseActivity implements MainView,
     @Override
     public void displayToolBar(String toolBarTitle) {
         if (toolBarTitle != null){
-            getSupportActionBar().setTitle(toolBarTitle);
+            toolbar.setTitle(toolBarTitle);
         }
+        setSupportActionBar(toolbar);
+
 
     }
 

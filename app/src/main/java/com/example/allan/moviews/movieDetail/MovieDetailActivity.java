@@ -2,6 +2,7 @@ package com.example.allan.moviews.movieDetail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -13,28 +14,19 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.base.BaseActivity;
 import com.example.allan.moviews.model.MovieItem;
 
-public class MovieDetailActivity extends BaseActivity implements MovieDetailView{
+public class MovieDetailActivity extends AppCompatActivity{
 
     private static final String MOVIE_ITEM = "movie_item";
     private MovieDetailPresenter movieDetailPresenter;
     private static MovieItem movie;
+    private MovieDetailFragment movieDetailFragment;
+
 
     @Override
-    protected void onActivityCreated(Bundle savedInstanceState) {
-       addFragment();
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_movie_detail;
-    }
-
-    @Override
-    public void setPresenter() {
-        movieDetailPresenter = new MovieDetailPresenter(movie);
-        movieDetailPresenter.attachView(this);
-        movieDetailPresenter.setToolBar();
-
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_movie_detail);
+        addFragment();
     }
 
     /**
@@ -52,29 +44,17 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     @Override
-    public void showProgress() {}
-
-    @Override
-    public void hideProgress() {}
-
-    @Override
-    public void displayToolBar(String toolBarTitle) {
-        ActionBar  actionBar = getSupportActionBar();
-        actionBar.setTitle(toolBarTitle);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-    @Override
-    public void addFragment() {
+
+    private void addFragment() {
+        movieDetailFragment = MovieDetailFragment.newFragmentinstance(this, movie);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.activity_movie_detail,
-                MovieDetailFragment.newFragmentinstance(this, movie));
+        fragmentTransaction.replace(R.id.activity_movie_detail,movieDetailFragment);
         fragmentTransaction.commit();
     }
+
 }

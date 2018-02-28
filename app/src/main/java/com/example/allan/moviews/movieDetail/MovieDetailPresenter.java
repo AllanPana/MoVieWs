@@ -16,10 +16,7 @@ public class MovieDetailPresenter<T extends MovieDetailView> extends BasePresent
         this.movieItem = movieItem;
     }
 
-    /**
-     *
-     *
-     */
+
     void setToolBar(){
         getmMvpView().displayToolBar(movieItem.getTitle());
     }
