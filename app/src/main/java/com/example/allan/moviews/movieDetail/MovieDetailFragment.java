@@ -1,13 +1,13 @@
 package com.example.allan.moviews.movieDetail;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.base.BaseFragment;
@@ -21,19 +21,33 @@ import butterknife.BindView;
  * allan.pana74@gmail.com
  */
 
-public class MovieDetailFragment extends BaseFragment implements MovieDetailView{
+public class MovieDetailFragment extends BaseFragment implements MovieDetailView {
 
-    private static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w780//";
+    private static final String IMAGE_URL_BASE_PATH = "http://image.tmdb.org/t/p/w780//";
+    private static final String IMAGE_URL_BASE_PATH_THUMBNAIL = "http://image.tmdb.org/t/p/w185//";
     private static final String MOVIE_ITEM = "movie_item";
     private MovieDetailPresenter movieDetailPresenter;
     private static MovieItem movie;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.colapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView(R.id.iv_movie_landscape) ImageView imageView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.colapsing_toolbar_layout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.iv_movie_landscape)
+    ImageView ivLandScape;
+    @BindView(R.id.iv_thumb_nail)
+    ImageView ivThumbNail;
+    @BindView(R.id.tv_synopsis)
+    TextView tvSynopsis;
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
+    @BindView(R.id.tv_rating)
+    TextView tvRating;
+    @BindView(R.id.tv_release_date)
+    TextView tvReleaseDate;
 
-    public static MovieDetailFragment newFragmentinstance(Context context, MovieItem movieItem){
+    public static MovieDetailFragment newFragmentinstance(MovieItem movieItem) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
-        movie = movieItem;
+        //movie = movieItem;
         Bundle args = new Bundle();
         args.putParcelable(MOVIE_ITEM, movieItem);
         movieDetailFragment.setArguments(args);
@@ -43,14 +57,8 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
 
     @Override
     public void onViewCreated() {
-        MovieItem movieItem = getArguments().getParcelable(MOVIE_ITEM);
-        Log.e("fragment", movieItem.getTitle());
-
-        if (imageView != null){
-            Picasso.with(getActivity()).load(IMAGE_URL_BASE_PATH + movieItem.getBackdropPath())
-                    .into(imageView);
-        }
-
+        //Get the parcelable args(MovieItem) from the MovieDetailActivity
+        movie = getArguments().getParcelable(MOVIE_ITEM);
     }
 
     @Override
@@ -64,13 +72,16 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
         movieDetailPresenter = new MovieDetailPresenter(movie);
         movieDetailPresenter.attachView(this);
         movieDetailPresenter.setToolBar();
+        movieDetailPresenter.setAdditionalMovieDetails();
     }
 
     @Override
-    public void showProgress() {}
+    public void showProgress() {
+    }
 
     @Override
-    public void hideProgress() {}
+    public void hideProgress() {
+    }
 
     @Override
     public void onDestroy() {
@@ -81,11 +92,40 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     @Override
     public void displayToolBar(String toolBarTitle) {
         toolbar.setTitle(toolBarTitle);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
         collapsingToolbarLayout.setTitle(toolBarTitle);
+    }
+
+    @Override
+    public void loadImageIntoToolbar(String imageUrl) {
+        Picasso.with(getActivity()).load(IMAGE_URL_BASE_PATH + imageUrl)
+                .into(ivLandScape);
+    }
+
+    @Override
+    public void loadThumbnailImage(String imageUrl) {
+        Picasso.with(getActivity()).load(IMAGE_URL_BASE_PATH_THUMBNAIL + imageUrl)
+                .into(ivThumbNail);
+    }
+
+    @Override
+    public void displayPlotSynopsis(String strSynopsis) {
+        tvSynopsis.setText(strSynopsis);
+    }
+
+    @Override
+    public void displayReleaseDate(String releaseDate) {
+        tvReleaseDate.setText(releaseDate);
+    }
+
+    @Override
+    public void displayMovieRating(String strMovieRating, float movieRating) {
+        tvRating.setText((strMovieRating));
+        ratingBar.setRating(movieRating);
     }
 }

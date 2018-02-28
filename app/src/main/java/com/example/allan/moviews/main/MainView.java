@@ -10,10 +10,9 @@ import java.util.List;
  * allan.pana74@gmail.com
  */
 
-public interface MainView extends MVPView {
+interface MainView extends MVPView {
 
     /**
-     *
      * @param results list of movie from Json response
      */
     void showListOfMovies(List<MovieItem> results);

@@ -36,7 +36,6 @@ public abstract class BaseFragment extends Fragment {
 
 
     /**
-     *
      * @return the res layout id
      */
     @LayoutRes

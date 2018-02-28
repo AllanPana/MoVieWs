@@ -20,7 +20,7 @@ import retrofit2.Response;
  * allan.pana74@gmail.com
  */
 
-class MainPresenter <T extends MainView>  extends BasePresenter<T> {
+class MainPresenter<T extends MainView> extends BasePresenter<T> {
 
     private static final String LOG_TAG = MainPresenter.class.getSimpleName();
     private static final String REPLACE_TOOL_BAR_TITLE = "movie/";
@@ -36,7 +36,7 @@ class MainPresenter <T extends MainView>  extends BasePresenter<T> {
     /**
      * Set the movie data to be display on the recyclerview
      */
-    void setMovieData(String url){
+    void setMovieData(String url) {
         getmMvpView().showProgress();
         Call<MovieResponse> movieResponseCall = movieService.getMovieApi()
                 .getMovieResponse(url, BuildConfig.MOVIE_DB_API_KEY);
@@ -59,30 +59,31 @@ class MainPresenter <T extends MainView>  extends BasePresenter<T> {
 
     /**
      * Set the toolbar for every sort of movie to be display
+     *
      * @param title The title of the toolbar to set
-     */
-    void setToolBar(String title){
+     *//**/
+    void setToolBar(String title) {
         getmMvpView().displayToolBar
                 (title.replace(REPLACE_TOOL_BAR_TITLE, "").toUpperCase());
     }
 
 
     /**
-     *
      * @param position item index in the list of movies
      * @return Movie item from the list of movies
      */
-    MovieItem getSelectedMovie(int position){
-            return movieItems.get(position);
+    MovieItem getSelectedMovie(int position) {
+        return movieItems.get(position);
     }
 
 
     /**
      * Set the url of the movie
+     *
      * @param movieUrl The url string {top_rated or popular}
      */
     void setMovieUrl(String movieUrl) {
-        if (movieUrl == null || movieUrl.equals("")){
+        if (movieUrl == null || movieUrl.equals("")) {
             return;
         }
         //set the url from sharedPref

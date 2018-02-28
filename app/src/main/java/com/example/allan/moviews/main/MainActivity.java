@@ -40,7 +40,8 @@ public class MainActivity extends BaseActivity implements MainView,
     ProgressBar progressBar;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void displayToolBar(String toolBarTitle) {
-        if (toolBarTitle != null){
+        if (toolBarTitle != null) {
             toolbar.setTitle(toolBarTitle);
         }
         setSupportActionBar(toolbar);
@@ -126,7 +127,7 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void onMovieItemClick(int position) {
-        startActivity( MovieDetailActivity
+        startActivity(MovieDetailActivity
                 .getIntent(MainActivity.this, mainPresenter.getSelectedMovie(position)));
 
 

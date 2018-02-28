@@ -10,7 +10,7 @@ import butterknife.Unbinder;
 /**
  * Created by Allan Pana on 19/02/18.
  * allan.pana74@gmail.com
- *
+ * <p>
  * This class is the base Acivity to be extend by all Activity in this app
  */
 
@@ -36,12 +36,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * In this method the initialization of view
-     * @param savedInstanceState
+     *
+     * @param savedInstanceState the state to be saved incase of configuration changes
      */
     protected abstract void onActivityCreated(Bundle savedInstanceState);
 
     /**
-     *
      * @return The layout of extending activity
      */
     protected abstract int getLayout();
