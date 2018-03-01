@@ -1,11 +1,15 @@
 package com.example.allan.moviews.apiService;
 
 import com.example.allan.moviews.model.MovieResponse;
+import com.example.allan.moviews.model.Review;
+import com.example.allan.moviews.model.ReviewResponse;
+import com.example.allan.moviews.model.TrailerResponse;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -31,7 +35,28 @@ public class MovieService {
          */
         @GET()
         Call<MovieResponse> getMovieResponse(@Url String url, @Query("api_key") String apiKey);
+
+        /**
+         *
+         * @param id endpoint url path to get the Trailer response
+         * @param apiKey API key from MovieDB
+         * @return TrailerResponse
+         */
+        @GET("movie/{id}/videos")
+        Call<TrailerResponse> getTrailerResponse(@Path("id") int id, @Query("api_key") String apiKey);
+
+        /**
+         *
+         * @param id    endpoint url path to get the Review response
+         * @param apiKey API key from MovieDB
+         * @return ReviewResponse
+         */
+        @GET("movie/{id}/reviews")
+        Call<ReviewResponse> getReviewResponse(@Path("id") int id, @Query("api_key") String apiKey);
+
     }
+
+
 
 
     /**
