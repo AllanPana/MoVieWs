@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
@@ -80,6 +81,9 @@ public class MainActivity extends BaseActivity implements MainView,
             mainPresenter.setMovieUrl(MOST_POPULAR);
         } else if (itemID == R.id.action_movie_top_rated) {
             mainPresenter.setMovieUrl(TOP_RATED);
+        }else if (itemID == R.id.action_movie_favorite) {
+            Toast.makeText(this, "#TODO",Toast.LENGTH_LONG).show();
+            //todo  call a db to retrive a favorite movie
         }
         return super.onOptionsItemSelected(item);
     }

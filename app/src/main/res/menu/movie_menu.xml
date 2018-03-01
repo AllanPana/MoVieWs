@@ -14,6 +14,11 @@
                     android:orderInCategory="200"
                     android:title="@string/menu_movie_top_rated"
                     app:showAsAction="never"/>
+
+                <item android:id="@+id/action_movie_favorite"
+                    android:orderInCategory="300"
+                    android:title="@string/menu_movie_favorite"
+                    app:showAsAction="never"/>
             </group>
         </menu>
     </item>

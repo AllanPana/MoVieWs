@@ -5,6 +5,7 @@
     <string name="menu_movie_popular">Popular</string>
     <string name="menu_movie_top_rated">Top Rated</string>
     <string name="menu_sort_movie_title">Sort movie by</string>
+    <string name="menu_movie_favorite">favorite</string>
 
 
 </resources>
