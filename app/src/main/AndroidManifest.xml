@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".movieDetail.MovieDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

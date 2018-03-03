@@ -2,6 +2,8 @@ package com.example.allan.moviews.movieDetail;
 
 import com.example.allan.moviews.base.MVPView;
 
+import java.util.List;
+
 /**
  * Created by Allan Pana on 22/02/18.
  * allan.pana74@gmail.com
@@ -11,9 +13,9 @@ interface MovieDetailView extends MVPView {
 
 
     /**
-     * @param imageUrl the image  url to load by Picasso
+     * @param keyList list of trailers key available
      */
-    void loadImageIntoToolbar(String imageUrl);
+    void loadTrailers(List<String> keyList);
 
     /**
      * @param imageUrl the image  url to load by Picasso
