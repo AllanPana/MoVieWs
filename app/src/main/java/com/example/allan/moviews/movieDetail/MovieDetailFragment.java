@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.allan.moviews.BuildConfig;
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseFragment;
@@ -31,11 +32,8 @@ import butterknife.BindView;
 
 public class MovieDetailFragment extends BaseFragment implements MovieDetailView {
 
-    YouTubePlayerSupportFragment youTubePlayerSupportFragment;
+    private YouTubePlayerSupportFragment youTubePlayerSupportFragment;
     public static final int RECOVERY_DIALOG_REQUEST = 1;
-    public static final String DEVELOPER_KEY = "AIzaSyCaySxDmogqyBONfVIWegZC2FYcLinTvb0";
-    // YouTube video id
-    public static final String YOUTUBE_VIDEO_CODE = "-k4knGRY8jA";
 
     private static final String IMAGE_URL_BASE_PATH = "http://image.tmdb.org/t/p/w780//";
     private static final String IMAGE_URL_BASE_PATH_THUMBNAIL = "http://image.tmdb.org/t/p/w185//";
@@ -121,13 +119,12 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.video_container, youTubePlayerSupportFragment).commit();
 
-        youTubePlayerSupportFragment.initialize(DEVELOPER_KEY, new YouTubePlayer.OnInitializedListener() {
+        youTubePlayerSupportFragment.initialize(BuildConfig.YOU_TUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                 YouTubePlayer youTubePlayer, boolean b) {
                 toolbar.setVisibility(View.GONE);
                 youTubePlayer.cueVideos(trailerKeys);
-                youTubePlayer.loadPlaylist("");
             }
 
             @Override

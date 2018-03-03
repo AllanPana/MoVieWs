@@ -53,7 +53,6 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         trailerResponseCall.enqueue(new Callback<TrailerResponse>() {
             @Override
             public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
-
                 List<Trailer> trailers = response.body().getResults();
                 for (Trailer t : trailers) {
                     stringKeys.add(t.getKey());
@@ -63,9 +62,7 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
 
             @Override
             public void onFailure(Call<TrailerResponse> call, Throwable t) {
-
             }
         });
-
     }
 }
