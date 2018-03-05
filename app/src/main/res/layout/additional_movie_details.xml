@@ -3,29 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/iv_thumb_nail"
         android:layout_width="@dimen/movie_details_image_thumbnail_width"
         android:layout_height="@dimen/movie_details_image_thumbnail_height"
+        android:layout_marginBottom="32dp"
         android:layout_marginStart="@dimen/app_standard_margin"
         android:layout_marginTop="@dimen/app_standard_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/expandableListViewForDetails"
         android:layout_marginLeft="@dimen/app_standard_margin" />
-
-    <TextView
-        android:id="@+id/tv_synopsis"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/app_standard_margin"
-        android:layout_marginStart="@dimen/app_standard_margin"
-        android:layout_marginTop="@dimen/app_standard_margin"
-        android:textColor="@color/textColorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_thumb_nail" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -62,6 +52,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail" />
+
+
+    <ExpandableListView
+        android:id="@+id/expandableListViewForDetails"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/colorAccent"
+        android:divider="@color/colorPrimaryLight"
+        android:dividerHeight="12dp"
+        android:childDivider="@color/colorPrimaryLight"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:nestedScrollingEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!--#todo dont want my group list to be scrollable-->
+
+    <!--android:nestedScrollingEnabled="true"-->
+
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
 
 </android.support.constraint.ConstraintLayout>

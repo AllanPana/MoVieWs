@@ -2,6 +2,7 @@ package com.example.allan.moviews.movieDetail;
 
 import com.example.allan.moviews.base.MVPView;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,4 +38,8 @@ interface MovieDetailView extends MVPView {
      * @param movierating    the double value of the movie rating to be set in RatingBar
      */
     void displayMovieRating(String strMovieRating, float movierating);
+
+
+    void displayExpandableListForMovieDetail(List<String> expandableListTitle,
+                                             HashMap<String, List<String>> expandableListDetail);
 }

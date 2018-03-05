@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,14 +48,13 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.iv_thumb_nail)
     ImageView ivThumbNail;
-    @BindView(R.id.tv_synopsis)
-    TextView tvSynopsis;
     @BindView(R.id.ratingBar)
     RatingBar ratingBar;
     @BindView(R.id.tv_rating)
     TextView tvRating;
     @BindView(R.id.tv_release_date)
     TextView tvReleaseDate;
+    @BindView(R.id.expandableListViewForDetails) ExpandableListView expandableListView;
 
     public static MovieDetailFragment newFragmentinstance(MovieItem movieItem) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
@@ -84,6 +85,7 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
         movieDetailPresenter.setToolBar();
         movieDetailPresenter.setAdditionalMovieDetails();
         movieDetailPresenter.setTrailer();
+        movieDetailPresenter.setExpandableListMovieData();
     }
 
     @Override
@@ -142,7 +144,7 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
 
     @Override
     public void displayPlotSynopsis(String strSynopsis) {
-        tvSynopsis.setText(strSynopsis);
+
     }
 
     @Override
@@ -154,5 +156,14 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     public void displayMovieRating(String strMovieRating, float movieRating) {
         tvRating.setText((strMovieRating));
         ratingBar.setRating(movieRating);
+    }
+
+    @Override
+    public void displayExpandableListForMovieDetail(List<String> expandableListTitle,
+                                                    HashMap<String, List<String>> expandableListDetail) {
+
+        MovieDetailListAdapter listAdapter = new MovieDetailListAdapter(getActivity(),
+                expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(listAdapter);
     }
 }
