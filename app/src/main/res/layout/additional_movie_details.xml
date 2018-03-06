@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -10,36 +9,36 @@
         android:layout_width="@dimen/movie_details_image_thumbnail_width"
         android:layout_height="@dimen/movie_details_image_thumbnail_height"
         android:layout_marginBottom="32dp"
+        android:layout_marginLeft="@dimen/app_standard_margin"
         android:layout_marginStart="@dimen/app_standard_margin"
         android:layout_marginTop="@dimen/app_standard_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/expandableListViewForDetails"
-        android:layout_marginLeft="@dimen/app_standard_margin" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RatingBar
         android:id="@+id/ratingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/app_standard_margin"
         android:layout_marginStart="@dimen/app_standard_margin"
         android:numStars="5"
         android:stepSize=".5"
         app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail"
-        app:layout_constraintTop_toTopOf="@+id/iv_thumb_nail"
-        android:layout_marginLeft="@dimen/app_standard_margin" />
+        app:layout_constraintTop_toTopOf="@+id/iv_thumb_nail" />
 
     <TextView
         android:id="@+id/tv_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/app_small_margin"
         android:layout_marginStart="@dimen/app_small_margin"
         android:textColor="@color/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ratingBar"
-        app:layout_constraintTop_toTopOf="@+id/ratingBar"
-        android:layout_marginLeft="@dimen/app_small_margin" />
+        app:layout_constraintTop_toTopOf="@+id/ratingBar" />
 
     <TextView
         android:id="@+id/tv_release_date"
@@ -53,29 +52,21 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail" />
 
-
-    <ExpandableListView
+    <com.example.allan.moviews.movieDetail.NonScrollExpandableListView
         android:id="@+id/expandableListViewForDetails"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:background="@color/colorAccent"
+        android:childDivider="@color/colorPrimaryLight"
         android:divider="@color/colorPrimaryLight"
         android:dividerHeight="12dp"
-        android:childDivider="@color/colorPrimaryLight"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-        android:nestedScrollingEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <!--#todo dont want my group list to be scrollable-->
-
-    <!--android:nestedScrollingEnabled="true"-->
-
-    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-
+        app:layout_constraintStart_toStartOf="parent"/>
+        <!--android:animateLayoutChanges="true"-->
 
 </android.support.constraint.ConstraintLayout>
