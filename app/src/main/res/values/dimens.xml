@@ -12,6 +12,8 @@
     <dimen name="recycler_view_item_margin">1dp</dimen>
     <dimen name="expandable_list_view_divider">12dp</dimen>
     <dimen name="expandable_movie_detail_group_item_padding">10dp</dimen>
+    <dimen name="fav_size">72dp</dimen>
+    <dimen name="tv_add_to_fav">8sp</dimen>
 
 
 </resources>

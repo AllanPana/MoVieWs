@@ -11,6 +11,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.allan.moviews.BuildConfig;
 import com.example.allan.moviews.R;
@@ -50,7 +51,10 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     TextView tvRating;
     @BindView(R.id.tv_release_date)
     TextView tvReleaseDate;
-    @BindView(R.id.expandableListViewForDetails) ExpandableListView expandableListView;
+    @BindView(R.id.expandableListViewForDetails)
+    ExpandableListView expandableListView;
+    @BindView(R.id.tv_add_to_fav)
+    TextView tvAddToFab;
 
     public static MovieDetailFragment newFragmentinstance(MovieItem movieItem) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
@@ -66,6 +70,13 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     public void onViewCreated() {
         //Get the parcelable args(MovieItem) from the MovieDetailActivity
         movie = getArguments().getParcelable(MOVIE_ITEM);
+        tvAddToFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "add to fav", Toast.LENGTH_LONG).show();
+                //todo create a function to add movie to database/contentprovider
+            }
+        });
     }
 
     @Override

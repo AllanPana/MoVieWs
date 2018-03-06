@@ -6,6 +6,9 @@
     <string name="menu_movie_top_rated">Top Rated</string>
     <string name="menu_sort_movie_title">Sort movie by</string>
     <string name="menu_movie_favorite">favorite</string>
+    <string name="release_date_label">Release date :</string>
+    <string name="rating_label">Rating :</string>
+    <string name="add_to_fav">Add \nto \nFav</string>
 
 
 </resources>
