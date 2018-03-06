@@ -34,10 +34,6 @@ import butterknife.BindView;
 
 public class MovieDetailFragment extends BaseFragment implements MovieDetailView {
 
-    private YouTubePlayerSupportFragment youTubePlayerSupportFragment;
-    public static final int RECOVERY_DIALOG_REQUEST = 1;
-
-    private static final String IMAGE_URL_BASE_PATH = "http://image.tmdb.org/t/p/w780//";
     private static final String IMAGE_URL_BASE_PATH_THUMBNAIL = "http://image.tmdb.org/t/p/w185//";
     private static final String MOVIE_ITEM = "movie_item";
     private MovieDetailPresenter movieDetailPresenter;
@@ -117,7 +113,7 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     @Override
     public void loadTrailers(final List<String> trailerKeys) {
 
-        youTubePlayerSupportFragment = YouTubePlayerSupportFragment.newInstance();
+        YouTubePlayerSupportFragment youTubePlayerSupportFragment = YouTubePlayerSupportFragment.newInstance();
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.video_container, youTubePlayerSupportFragment).commit();
 
@@ -130,7 +126,8 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
             }
 
             @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+            public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                YouTubeInitializationResult youTubeInitializationResult) {
 
             }
         });
@@ -140,11 +137,6 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     public void loadThumbnailImage(String imageUrl) {
         Picasso.with(getActivity()).load(IMAGE_URL_BASE_PATH_THUMBNAIL + imageUrl)
                 .into(ivThumbNail);
-    }
-
-    @Override
-    public void displayPlotSynopsis(String strSynopsis) {
-
     }
 
     @Override

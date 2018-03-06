@@ -12,6 +12,6 @@
         android:layout_height="wrap_content"
         android:background="@color/logo_color"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
+        android:paddingTop="@dimen/expandable_movie_detail_group_item_padding"
+        android:paddingBottom="@dimen/expandable_movie_detail_group_item_padding" />
 </LinearLayout>

@@ -24,11 +24,6 @@ interface MovieDetailView extends MVPView {
     void loadThumbnailImage(String imageUrl);
 
     /**
-     * @param strSynopsis the plot sysnopsis of the movie
-     */
-    void displayPlotSynopsis(String strSynopsis);
-
-    /**
      * @param releaseDate of the movie
      */
     void displayReleaseDate(String releaseDate);
@@ -40,6 +35,11 @@ interface MovieDetailView extends MVPView {
     void displayMovieRating(String strMovieRating, float movierating);
 
 
+    /**
+     *
+     * @param expandableListTitle Group title of the ExpandableListView {Movie Reviews and Synopsis}
+     * @param expandableListDetail map that hold the data for {Movie Reviews and Synopsis}
+     */
     void displayExpandableListForMovieDetail(List<String> expandableListTitle,
                                              HashMap<String, List<String>> expandableListDetail);
 }

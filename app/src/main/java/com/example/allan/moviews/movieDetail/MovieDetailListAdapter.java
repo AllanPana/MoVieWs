@@ -18,17 +18,15 @@ import java.util.List;
  * allan.pana74@gmail.com
  */
 
-public class MovieDetailListAdapter extends BaseExpandableListAdapter {
+class MovieDetailListAdapter extends BaseExpandableListAdapter {
 
 
     private Context context;
     private List<String> expandableListTitle;
     private HashMap<String, List<String>> expandableListDetail;
-    TextView tvAuthor;
-    private String listTitle;
 
-    public MovieDetailListAdapter(Context context, List<String> expandableListTitle,
-                                       HashMap<String, List<String>> expandableListDetail) {
+    MovieDetailListAdapter(Context context, List<String> expandableListTitle,
+                           HashMap<String, List<String>> expandableListDetail) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
@@ -54,8 +52,7 @@ public class MovieDetailListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.expandable_movie_detail_list_item, null);
         }
-        TextView expandedListTextView = (TextView) convertView
-                .findViewById(R.id.tv_expandableListItem);
+        TextView expandedListTextView = convertView.findViewById(R.id.tv_expandableListItem);
         expandedListTextView.setText(expandedListText);
 
 
@@ -86,14 +83,13 @@ public class MovieDetailListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        listTitle = (String) getGroup(listPosition);
+        String listTitle = (String) getGroup(listPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.expandable_movie_detail_group_item, null);
         }
-        TextView listTitleTextView = (TextView) convertView
-                .findViewById(R.id.tv_expandableGroupItem);
+        TextView listTitleTextView = convertView.findViewById(R.id.tv_expandableGroupItem);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);
 

@@ -1,7 +1,5 @@
 package com.example.allan.moviews.movieDetail;
 
-import android.util.Log;
-
 import com.example.allan.moviews.BuildConfig;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
@@ -12,6 +10,7 @@ import com.example.allan.moviews.model.Trailer;
 import com.example.allan.moviews.model.TrailerResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,11 +25,11 @@ import retrofit2.Response;
 
 class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
 
-    private static final String MOVIE_REVIEWS = "MOVIE REVIEWS";
     private static final String PLOT_SYNOPSIS = "PLOT SYNOPSIS";
+    private static final String MOVIE_REVIEWS = "REVIEWS";
+    private static final String NO_REVIEWS = "Sorry, No movie review available at the moment";
     private MovieItem movieItem;
     private MovieService movieService;
-
 
     MovieDetailPresenter(MovieService movieService, MovieItem movieItem) {
         this.movieService = movieService;
@@ -43,7 +42,6 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
 
     void setAdditionalMovieDetails() {
         getmMvpView().loadThumbnailImage(movieItem.getPosterPath());
-        getmMvpView().displayPlotSynopsis(movieItem.getOverview());
         getmMvpView().displayReleaseDate(movieItem.getReleaseDate());
         getmMvpView().displayMovieRating((movieItem.getVoteAverage() / 2) + "/5",
                 (float) (movieItem.getVoteAverage() / 2));
@@ -74,10 +72,9 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
     }
 
     /**
-     *
-     *  Set the hashmap value of Synopsis and Reviews details to be used for ExpandableListView
+     * Set the hashmap value of Synopsis and Reviews details to be used for ExpandableListView
      */
-    void  setExpandableListMovieData() {
+    void setExpandableListMovieData() {
         final HashMap<String, List<String>> expandableListDetail = new HashMap<>();
 
         final List<String> reviewList = new ArrayList<>();
@@ -91,13 +88,20 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
             @Override
             public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
                 List<Review> list = response.body().getResults();
-                for (Review review : list){
-                    reviewList.add(review.getAuthor() + "\n\n" + review.getContent());
-                    Log.e("review 12" , review.getAuthor() + "\n\n" + review.getContent());
+                for (Review review : list) {
+                    reviewList.add(review.getAuthor()
+                            + "\n\n" + review.getContent());
                 }
-                expandableListDetail.put(MOVIE_REVIEWS, reviewList);
 
-                getmMvpView().displayExpandableListForMovieDetail(new ArrayList<String>(expandableListDetail.keySet()),
+                if (list.isEmpty()) {
+                    reviewList.add(NO_REVIEWS);
+                }
+
+                expandableListDetail.put(MOVIE_REVIEWS, reviewList);
+                List<String> sortedList = new ArrayList<>(expandableListDetail.keySet());
+                Collections.sort(sortedList);
+                getmMvpView().displayExpandableListForMovieDetail(
+                        sortedList,
                         expandableListDetail);
             }
 
