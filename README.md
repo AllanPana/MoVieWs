@@ -1,0 +1,3 @@
+# MoVieWs
+
+Android Studio, Java, MovieDB, YoutubeAPI, MVP, Retrofit, Picasso, Butterknife and Material Design...
