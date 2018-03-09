@@ -1,5 +1,10 @@
 package com.example.allan.moviews.movieDetail;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
+import android.util.Log;
+
 import com.example.allan.moviews.BuildConfig;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
@@ -8,6 +13,7 @@ import com.example.allan.moviews.model.Review;
 import com.example.allan.moviews.model.ReviewResponse;
 import com.example.allan.moviews.model.Trailer;
 import com.example.allan.moviews.model.TrailerResponse;
+import com.example.allan.moviews.model.favData.FavMovieContract;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -110,5 +116,19 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
 
             }
         });
+    }
+
+
+    void addMovieToFav(ContentResolver contentResolver){
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(FavMovieContract.FavMovieEntry._ID, movieItem.getId());
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_NAME, movieItem.getOriginalTitle());
+
+        Uri uri = contentResolver.insert(FavMovieContract.FavMovieEntry.CONTENT_URI, contentValues);
+
+        if (uri != null){
+            Log.e("allan uri" , uri.toString());
+        }
     }
 }

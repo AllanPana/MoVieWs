@@ -1,11 +1,17 @@
 package com.example.allan.moviews.movieDetail;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -18,6 +24,7 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseFragment;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.model.favData.FavMovieContract;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -33,7 +40,8 @@ import butterknife.BindView;
  * allan.pana74@gmail.com
  */
 
-public class MovieDetailFragment extends BaseFragment implements MovieDetailView {
+public class MovieDetailFragment extends BaseFragment implements
+        MovieDetailView, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String IMAGE_URL_BASE_PATH_THUMBNAIL = "http://image.tmdb.org/t/p/w185//";
     private static final String MOVIE_ITEM = "movie_item";
@@ -56,6 +64,8 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     @BindView(R.id.tv_add_to_fav)
     TextView tvAddToFab;
 
+    private static final int FAV_MOVIE_LOADER_ID = 0;
+
     public static MovieDetailFragment newFragmentinstance(MovieItem movieItem) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         //movie = movieItem;
@@ -70,13 +80,16 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     public void onViewCreated() {
         //Get the parcelable args(MovieItem) from the MovieDetailActivity
         movie = getArguments().getParcelable(MOVIE_ITEM);
+
         tvAddToFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "add to fav", Toast.LENGTH_LONG).show();
-                //todo create a function to add movie to database/contentprovider
+                movieDetailPresenter.addMovieToFav(getActivity().getContentResolver());
             }
         });
+
+        getActivity().getSupportLoaderManager().initLoader(FAV_MOVIE_LOADER_ID, null, this);
     }
 
     @Override
@@ -168,5 +181,29 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
         MovieDetailListAdapter listAdapter = new MovieDetailListAdapter(getActivity(),
                 expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(listAdapter);
+    }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        return new FavMovieLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Cursor data) {
+
+                if(data.getCount()>0){
+                    while (data.moveToNext()){
+                        String name = data.getString(
+                                data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_NAME));
+                        int movieId = data.getInt(
+                                data.getColumnIndex(FavMovieContract.FavMovieEntry._ID));
+                        Log.e("provider", name + " = " + movieId);
+                    }
+                }
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
     }
 }

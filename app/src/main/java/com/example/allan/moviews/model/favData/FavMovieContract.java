@@ -29,9 +29,5 @@ public class FavMovieContract{
         // "_ID" column in addition to the two below
         public static final String COLUMN_NAME = "movie_name";
 
-        public static final String COLUMN_IMAGE = "movie_image";
-
-
-
     }
 }
