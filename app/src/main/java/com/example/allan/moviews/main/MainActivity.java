@@ -188,6 +188,7 @@ public class MainActivity extends BaseActivity implements MainView,
      * @param loaderManager the loadermanager to start or initialized
      */
     void startLoader(LoaderManager loaderManager){
+        isfav = true;
         if(loaderManager.getLoader(FAV_MOVIE_LOADER_ID) == null){
             loaderManager.initLoader(FAV_MOVIE_LOADER_ID, null, this);
         }else {
