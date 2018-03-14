@@ -14,6 +14,7 @@ import com.example.allan.moviews.model.ReviewResponse;
 import com.example.allan.moviews.model.Trailer;
 import com.example.allan.moviews.model.TrailerResponse;
 import com.example.allan.moviews.model.favData.FavMovieContract;
+import com.example.allan.moviews.util.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,6 +52,9 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         getmMvpView().displayReleaseDate(movieItem.getReleaseDate());
         getmMvpView().displayMovieRating((movieItem.getVoteAverage() / 2) + "/5",
                 (float) (movieItem.getVoteAverage() / 2));
+
+        String s = movieItem.getPosterPath();
+        getmMvpView().setImageBitmap(s); // todo copy it in mainpresenter
     }
 
     /**
@@ -119,16 +123,21 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
     }
 
 
+    /**
+     *
+     * @param contentResolver the ContentResolver to access the Sharedpreference data
+     */
     void addMovieToFav(ContentResolver contentResolver){
         ContentValues contentValues = new ContentValues();
-
         contentValues.put(FavMovieContract.FavMovieEntry._ID, movieItem.getId());
         contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_NAME, movieItem.getOriginalTitle());
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_IMAGE, ImageUtil.getBytes(getmMvpView().getBitmap()));
 
         Uri uri = contentResolver.insert(FavMovieContract.FavMovieEntry.CONTENT_URI, contentValues);
 
         if (uri != null){
-            Log.e("allan uri" , uri.toString());
+            Log.e("allan uri" , uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_NAME));
+
         }
     }
 }

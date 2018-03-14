@@ -1,5 +1,7 @@
 package com.example.allan.moviews.movieDetail;
 
+import android.graphics.Bitmap;
+
 import com.example.allan.moviews.base.MVPView;
 
 import java.util.HashMap;
@@ -42,4 +44,17 @@ interface MovieDetailView extends MVPView {
      */
     void displayExpandableListForMovieDetail(List<String> expandableListTitle,
                                              HashMap<String, List<String>> expandableListDetail);
+
+    /**
+     *
+     * @return bitmap image
+     */
+    Bitmap getBitmap();
+
+    /**
+     * This method will set the image from dbmovie into bitmap to be saved into the Database
+     *
+     * @param url of an image from DBMovie
+     */
+    void setImageBitmap(String url);
 }

@@ -58,6 +58,9 @@ public class MovieItem implements Parcelable{
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
+
+    private byte [] bytes;
+
     public final static Parcelable.Creator<MovieItem> CREATOR = new Creator<MovieItem>() {
 
 
@@ -205,6 +208,14 @@ public class MovieItem implements Parcelable{
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

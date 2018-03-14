@@ -1,10 +1,14 @@
 package com.example.allan.moviews.main;
 
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +19,11 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseActivity;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.model.favData.FavMovieContract;
 import com.example.allan.moviews.movieDetail.MovieDetailActivity;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -28,29 +34,35 @@ import butterknife.BindView;
  * allan.pana74@gmail.com
  */
 public class MainActivity extends BaseActivity implements MainView,
-        MovieAdapter.MovieOnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        MovieAdapter.MovieOnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener,
+        LoaderManager.LoaderCallbacks<Cursor>{
 
     //private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String TOP_RATED = "movie/top_rated";
     private static final String MOST_POPULAR = "movie/popular";
+    private static final int FAV_MOVIE_LOADER_ID = 0;
+    public static final String FAVORITE = "favorite";
     //private static final String UPCOMING = "movie/upcoming";
     private MainPresenter mainPresenter;
     private MoviePrefsHelper moviePrefsHelper;
     private SharedPreferences sharedPreferences;
+    private FavMovieLoader favMovieLoader;
+    private MovieAdapter movieAdapter;
     @BindView(R.id.pb_loading_indicator)
     ProgressBar progressBar;
     @BindView(R.id.rv_movie)
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    private boolean isfav;
+    private LoaderManager loaderManager;
 
     @Override
     protected void onActivityCreated(Bundle savedInstanceState) {
         sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
         moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-
-
+        loaderManager  = getSupportLoaderManager();
     }
 
     @Override
@@ -62,8 +74,12 @@ public class MainActivity extends BaseActivity implements MainView,
     public void setPresenter() {
         mainPresenter = new MainPresenter(new MovieService(), moviePrefsHelper);
         mainPresenter.attachView(this);
-        mainPresenter.setMovieData(moviePrefsHelper.getSortMovie());
-
+        String movieSort = moviePrefsHelper.getSortMovie();
+        if (movieSort.equals(FAVORITE)){
+            startLoader(loaderManager);
+        }else {
+            mainPresenter.loadMoviesFromServer(moviePrefsHelper.getSortMovie());
+        }
     }
 
 
@@ -78,12 +94,15 @@ public class MainActivity extends BaseActivity implements MainView,
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
         if (itemID == R.id.action_movie_popular) {
+            isfav = false;
             mainPresenter.setMovieUrl(MOST_POPULAR);
         } else if (itemID == R.id.action_movie_top_rated) {
+            isfav = false;
             mainPresenter.setMovieUrl(TOP_RATED);
         }else if (itemID == R.id.action_movie_favorite) {
-            Toast.makeText(this, "#TODO",Toast.LENGTH_LONG).show();
-            //todo  call a db to retrive a favorite movie
+            isfav = true;
+            mainPresenter.setMovieUrl(FAVORITE);
+           startLoader(loaderManager);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -109,7 +128,7 @@ public class MainActivity extends BaseActivity implements MainView,
 
     @Override
     public void showListOfMovies(List<MovieItem> results) {
-        MovieAdapter movieAdapter = new MovieAdapter(results, this);
+        movieAdapter = new MovieAdapter(results, this, isfav);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         //recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
@@ -140,6 +159,41 @@ public class MainActivity extends BaseActivity implements MainView,
     //Listerner for the SharedPreference when preference value changed
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        mainPresenter.setMovieData(moviePrefsHelper.getSortMovie());
+        if (isfav){
+           startLoader(loaderManager);
+        }else {
+            mainPresenter.loadMoviesFromServer(moviePrefsHelper.getSortMovie());
+        }
+    }
+
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        favMovieLoader = new FavMovieLoader(this);
+        return favMovieLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Cursor data) {
+
+       mainPresenter.loadMoviesFromDataBase(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
+    }
+
+    /**
+     *
+     * @param loaderManager the loadermanager to start or initialized
+     */
+    void startLoader(LoaderManager loaderManager){
+        if(loaderManager.getLoader(FAV_MOVIE_LOADER_ID) == null){
+            loaderManager.initLoader(FAV_MOVIE_LOADER_ID, null, this);
+        }else {
+            loaderManager.restartLoader(FAV_MOVIE_LOADER_ID, null, this);
+        }
+
+        //movieAdapter.notifyDataSetChanged();
     }
 }

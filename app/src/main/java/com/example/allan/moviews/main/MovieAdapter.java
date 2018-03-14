@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.util.ImageUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,11 +30,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private MovieOnItemClickListener movieOnItemClickListener;
     private List<MovieItem> movies;
     private static final String IMAGE_URL_BASE_PATH = "http://image.tmdb.org/t/p/w185//";
+    private boolean isfav;
 
 
-    MovieAdapter(List<MovieItem> movies, MovieOnItemClickListener movieOnItemClickListener) {
+    MovieAdapter(List<MovieItem> movies,
+                 MovieOnItemClickListener movieOnItemClickListener, boolean isfav) {
         this.movies = movies;
         this.movieOnItemClickListener = movieOnItemClickListener;
+        this.isfav = isfav;
     }
 
     @Override
@@ -48,9 +52,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         String imageUrl = IMAGE_URL_BASE_PATH + movie.getPosterPath();
 
         //holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(700, 680);
-        holder.ivMoviePoster.setContentDescription(movie.getTitle());
-        Picasso.with(holder.itemView.getContext()).load(imageUrl)
-                .into(holder.ivMoviePoster);
+        //holder.ivMoviePoster.setContentDescription(movie.getTitle());
+        if (isfav){
+            holder.ivMoviePoster.setImageBitmap(ImageUtil.getImage(movie.getBytes()));
+        }else {
+            Picasso.with(holder.itemView.getContext()).load(imageUrl)
+                    .into(holder.ivMoviePoster);
+        }
+
 
     }
 

@@ -17,7 +17,7 @@ public class FavMovieDb extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "favMovieDb.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
 
     public FavMovieDb(Context context) {
@@ -30,6 +30,7 @@ public class FavMovieDb extends SQLiteOpenHelper {
         // Create tasks table (careful to follow SQL formatting rules)
         final String CREATE_TABLE = "CREATE TABLE "  + FavMovieEntry.TABLE_NAME + " (" +
                 FavMovieEntry._ID            + " INTEGER PRIMARY KEY, " +
+                FavMovieEntry.COLUMN_IMAGE            + " BLOB, " +
                 FavMovieEntry.COLUMN_NAME    + ");";
 
         db.execSQL(CREATE_TABLE);

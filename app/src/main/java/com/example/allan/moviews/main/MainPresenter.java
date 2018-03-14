@@ -1,5 +1,6 @@
 package com.example.allan.moviews.main;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import com.example.allan.moviews.BuildConfig;
@@ -7,8 +8,10 @@ import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
 import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.model.MovieResponse;
+import com.example.allan.moviews.model.favData.FavMovieContract;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,10 +36,8 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
         this.moviePrefsHelper = moviePrefsHelper;
     }
 
-    /**
-     * Set the movie data to be display on the recyclerview
-     */
-    void setMovieData(String url) {
+
+    public void loadMoviesFromServer(String url) {
         getmMvpView().showProgress();
         Call<MovieResponse> movieResponseCall = movieService.getMovieApi()
                 .getMovieResponse(url, BuildConfig.MOVIE_DB_API_KEY);
@@ -54,6 +55,26 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
                 Log.e(LOG_TAG, t.getMessage());
             }
         });
+    }
+
+    public void loadMoviesFromDataBase(Cursor data) {
+        List<MovieItem>favMovies = new ArrayList<>();
+
+        if (data.getCount() > 0) {
+            while (data.moveToNext()) {
+                String name = data.getString(
+                        data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_NAME));
+                int movieId = data.getInt(
+                        data.getColumnIndex(FavMovieContract.FavMovieEntry._ID));
+                byte[] bytes = data.getBlob(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_IMAGE));
+                MovieItem movieItem = new MovieItem();
+                movieItem.setBytes(bytes);
+                favMovies.add(movieItem);
+                Log.e("provider", name + " = " + movieId);
+            }
+        }
+        movieItems = favMovies;
+        getmMvpView().showListOfMovies(movieItems);
     }
 
 

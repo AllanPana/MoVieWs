@@ -1,4 +1,4 @@
-package com.example.allan.moviews.movieDetail;
+package com.example.allan.moviews.main;
 
 import android.content.Context;
 import android.database.Cursor;
