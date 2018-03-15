@@ -1,3 +1,13 @@
 # MoVieWs
 
-Android Studio, Java, MovieDB, YoutubeAPI, MVP, Retrofit, Picasso, Butterknife and Material Design...
+Android Studio,
+Java,
+SQLite,
+SharedPreference,
+MovieDB,
+YoutubeAPI,
+MVP,
+Retrofit,
+Picasso,
+Butterknife
+and Material Design...
