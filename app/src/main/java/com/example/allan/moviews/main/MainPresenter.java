@@ -8,7 +8,9 @@ import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
 import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.model.MovieResponse;
+import com.example.allan.moviews.model.Review;
 import com.example.allan.moviews.model.favData.FavMovieContract;
+import com.example.allan.moviews.util.MovieAppUtil;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
     }
 
 
+    //List of movie from server
     void loadMoviesFromServer(String url) {
         getmMvpView().showProgress();
         Call<MovieResponse> movieResponseCall = movieService.getMovieApi()
@@ -47,6 +50,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
                 getmMvpView().hideProgress();
                 movieItems = response.body().getResults();
                 getmMvpView().showListOfMovies(movieItems);
+                //Log.e("allan", movieItems.get(0).getBackdropPath());
             }
 
             @Override
@@ -57,6 +61,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
         });
     }
 
+    //List of movies from db
     void loadMoviesFromDataBase(Cursor data) {
         List<MovieItem>favMovies = new ArrayList<>();
 
@@ -66,11 +71,32 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
                         data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_NAME));
                 int movieId = data.getInt(
                         data.getColumnIndex(FavMovieContract.FavMovieEntry._ID));
-                byte[] bytes = data.getBlob(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_POSTER_PATH));
+                byte[] bytesPosterPath = data.getBlob(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_POSTER_PATH));
+                byte[] bytesBackDropPath = data.getBlob(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_BACK_DROP_PATH));
+                String synopsis = data.getString(
+                        data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_SYNOPSIS));
+                String review = data.getString(
+                        data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_REVIEW));
+                double voteAverage = data.getDouble(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_VOTE_AVERAGE));
+                String releaseDate = data.getString(
+                        data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_RELEASE_DATE));
+
+                //Create movieItem object came from db
                 MovieItem movieItem = new MovieItem();
-                movieItem.setBytesPosterPath(bytes);
+                movieItem.setOriginalTitle(name);
+                movieItem.setId(movieId);
+                movieItem.setBytesPosterPath(bytesPosterPath); //has to be converted to Bitmap to be used
+                //todo fix this BufferOverflowException
+                movieItem.setBytesBackDropPath(bytesBackDropPath); //has to be converted to Bitmap to be used
+                movieItem.setOverview(synopsis);
+                movieItem.setStrReview(review); //has to be converted to ArrayList to be used
+                movieItem.setVoteAverage(voteAverage);
+                movieItem.setReleaseDate(releaseDate);
+
                 favMovies.add(movieItem);
-                Log.e("provider", name + " = " + movieId);
+                Log.e("provider", name + " = " + movieId + " \n poster = " + bytesPosterPath.length + "\n backdrop = " + bytesBackDropPath.length
+                + "\n release date = " + releaseDate);
+
             }
         }
         movieItems = favMovies;

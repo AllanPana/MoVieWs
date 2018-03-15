@@ -63,6 +63,8 @@ public class MovieItem implements Parcelable{
 
     private byte [] bytesBackDropPath;
 
+    private String strReview;
+
     public final static Parcelable.Creator<MovieItem> CREATOR = new Creator<MovieItem>() {
 
 
@@ -97,6 +99,7 @@ public class MovieItem implements Parcelable{
         this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
         this.bytesPosterPath = in.createByteArray();
         this.bytesBackDropPath = in.createByteArray();
+        this.strReview = ((String) in.readValue((String.class.getClassLoader())));
 
     }
 
@@ -231,6 +234,13 @@ public class MovieItem implements Parcelable{
         return bytesBackDropPath;
     }
 
+    public String getStrReview() {
+        return strReview;
+    }
+
+    public void setStrReview(String strReview) {
+        this.strReview = strReview;
+    }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(voteCount);
@@ -249,6 +259,7 @@ public class MovieItem implements Parcelable{
         dest.writeValue(releaseDate);
         dest.writeByteArray(bytesPosterPath);
         dest.writeByteArray(bytesBackDropPath);
+        dest.writeValue(strReview);
     }
 
     public int describeContents() {

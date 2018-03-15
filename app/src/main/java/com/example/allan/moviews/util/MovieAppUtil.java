@@ -40,7 +40,7 @@ public class MovieAppUtil {
     }
 
     //convert string from database  to arraylist
-    public static <T> List<String> stringList(String stringJson){
+    public static <T> List<T> stringList(String stringJson){
         Type type = new TypeToken<ArrayList<T>>(){}.getType();
         return new Gson().fromJson(stringJson, type);
     }

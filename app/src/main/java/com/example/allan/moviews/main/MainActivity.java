@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity implements MainView,
     @Override
     public void onMovieItemClick(int position) {
         startActivity(MovieDetailActivity
-                .getIntent(MainActivity.this, mainPresenter.getSelectedMovie(position)));
+                .getIntent(MainActivity.this, mainPresenter.getSelectedMovie(position), isfav));
 
 
     }

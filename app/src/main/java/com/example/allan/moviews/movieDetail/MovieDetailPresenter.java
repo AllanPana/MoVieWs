@@ -49,7 +49,7 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
     }
 
     void setAdditionalMovieDetails() {
-        getmMvpView().loadThumbnailImage(movieItem.getPosterPath());
+        //getmMvpView().loadThumbnailImage(movieItem.getPosterPath());
         getmMvpView().displayReleaseDate(movieItem.getReleaseDate());
         getmMvpView().displayMovieRating((movieItem.getVoteAverage() / 2) + "/5",
                 (float) (movieItem.getVoteAverage() / 2));
@@ -143,7 +143,7 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         Uri uri = contentResolver.insert(FavMovieContract.FavMovieEntry.CONTENT_URI, contentValues);
 
         if (uri != null) {
-            Log.e("allan uri", uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_NAME));
+            Log.e("allan uri", uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_BACK_DROP_PATH));
 
         }
     }
