@@ -27,8 +27,13 @@ public class FavMovieContract{
 
         // Since FavMovieEntry implements the interface "BaseColumns", it has an automatically produced
         // "_ID" column in addition to the two below
-        public static final String COLUMN_NAME = "movie_name";
-        public static final String COLUMN_IMAGE = "movie_image";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_POSTER_PATH = "poster_path";
+        public static final String COLUMN_BACK_DROP_PATH = "back_drop_path";
+        public static final String COLUMN_SYNOPSIS = "synopsis";
+        public static final String COLUMN_REVIEW = "review";
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+        public static final String COLUMN_RELEASE_DATE = "release_date";
 
     }
 }

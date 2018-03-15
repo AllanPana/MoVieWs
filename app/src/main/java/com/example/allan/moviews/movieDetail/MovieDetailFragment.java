@@ -1,16 +1,12 @@
 package com.example.allan.moviews.movieDetail;
 
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -22,8 +18,6 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseFragment;
 import com.example.allan.moviews.model.MovieItem;
-import com.example.allan.moviews.model.favData.FavMovieContract;
-import com.example.allan.moviews.util.ImageUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -42,8 +36,8 @@ import butterknife.BindView;
 
 public class MovieDetailFragment extends BaseFragment implements MovieDetailView{
 
-    private static final String IMAGE_URL_BASE_PATH_THUMBNAIL = "http://image.tmdb.org/t/p/w185//";
-    private static final String IMAGE_URL_BASE_PATH_LANDSCAPE = "http://image.tmdb.org/t/p/w780//";
+    private static final String IMAGE_URL_POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
+    private static final String IMAGE_URL_BACK_DROP_PATH = "http://image.tmdb.org/t/p/w780//";
     private static final String MOVIE_ITEM = "movie_item";
     private MovieDetailPresenter movieDetailPresenter;
     private static MovieItem movie;
@@ -64,9 +58,8 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     @BindView(R.id.tv_add_to_fav)
     TextView tvAddToFab;
 
-    private Bitmap bitmap;
-
-    private static final int FAV_MOVIE_LOADER_ID = 0;
+    private Bitmap posterPathBitmap;
+    private Bitmap backDropPathBitmap;
 
     public static MovieDetailFragment newFragmentinstance(MovieItem movieItem) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
@@ -159,7 +152,7 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
 
     @Override
     public void loadThumbnailImage(String imageUrl) {
-        Picasso.with(getActivity()).load(IMAGE_URL_BASE_PATH_THUMBNAIL + imageUrl)
+        Picasso.with(getActivity()).load(IMAGE_URL_POSTER_PATH + imageUrl)
                 .into(ivThumbNail);
     }
 
@@ -184,18 +177,39 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     }
 
     @Override
-    public Bitmap getBitmap() {
-        return bitmap;
+    public Bitmap getPosterPathBitmap() {
+        return posterPathBitmap;
     }
 
     @Override
-    public void setImageBitmap(final String imageUrl) {
+    public void setPosterPathBitmap(final String imageUrl) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    bitmap = Picasso.with(getActivity())
-                            .load(IMAGE_URL_BASE_PATH_THUMBNAIL + imageUrl)
+                    posterPathBitmap = Picasso.with(getActivity())
+                            .load(IMAGE_URL_POSTER_PATH + imageUrl)
+                            .get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    public Bitmap getBackDropPathBitmap() {
+        return backDropPathBitmap;
+    }
+
+    @Override
+    public void setBackDropPathPathBitmap(final String imageUrl) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    backDropPathBitmap = Picasso.with(getActivity())
+                            .load(IMAGE_URL_BACK_DROP_PATH + imageUrl)
                             .get();
                 } catch (IOException e) {
                     e.printStackTrace();

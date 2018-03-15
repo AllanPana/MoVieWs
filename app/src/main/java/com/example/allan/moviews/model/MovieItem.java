@@ -4,7 +4,7 @@ import java.util.List;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -59,7 +59,9 @@ public class MovieItem implements Parcelable{
     @Expose
     private String releaseDate;
 
-    private byte [] bytes;
+    private byte [] bytesPosterPath;
+
+    private byte [] bytesBackDropPath;
 
     public final static Parcelable.Creator<MovieItem> CREATOR = new Creator<MovieItem>() {
 
@@ -93,6 +95,9 @@ public class MovieItem implements Parcelable{
         this.adult = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.overview = ((String) in.readValue((String.class.getClassLoader())));
         this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
+        this.bytesPosterPath = in.createByteArray();
+        this.bytesBackDropPath = in.createByteArray();
+
     }
 
     public MovieItem() {
@@ -210,13 +215,22 @@ public class MovieItem implements Parcelable{
         this.releaseDate = releaseDate;
     }
 
-    public byte[] getBytes() {
-        return bytes;
+    public byte[] getBytesPosterPath() {
+        return bytesPosterPath;
     }
 
-    public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
+    public void setBytesPosterPath(byte[] bytesPosterPath) {
+        this.bytesPosterPath = bytesPosterPath;
     }
+
+    public void setBytesBackDropPath(byte[] bytesBackDropPath) {
+        this.bytesBackDropPath = bytesBackDropPath;
+    }
+
+    public byte[] getBytesBackDropPath() {
+        return bytesBackDropPath;
+    }
+
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(voteCount);
@@ -233,6 +247,8 @@ public class MovieItem implements Parcelable{
         dest.writeValue(adult);
         dest.writeValue(overview);
         dest.writeValue(releaseDate);
+        dest.writeByteArray(bytesPosterPath);
+        dest.writeByteArray(bytesBackDropPath);
     }
 
     public int describeContents() {

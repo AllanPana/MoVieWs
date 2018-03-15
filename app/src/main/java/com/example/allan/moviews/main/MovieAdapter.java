@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.model.MovieItem;
-import com.example.allan.moviews.util.ImageUtil;
+import com.example.allan.moviews.util.MovieAppUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         //holder.ivMoviePoster.getLayoutParams().height = getRandomIntInRange(700, 680);
         //holder.ivMoviePoster.setContentDescription(movie.getTitle());
         if (isfav){
-            holder.ivMoviePoster.setImageBitmap(ImageUtil.getImage(movie.getBytes()));
+            holder.ivMoviePoster.setImageBitmap(MovieAppUtil.getImage(movie.getBytesPosterPath()));
         }else {
             Picasso.with(holder.itemView.getContext()).load(imageUrl)
                     .into(holder.ivMoviePoster);

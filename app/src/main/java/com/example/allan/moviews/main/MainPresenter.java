@@ -37,7 +37,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
     }
 
 
-    public void loadMoviesFromServer(String url) {
+    void loadMoviesFromServer(String url) {
         getmMvpView().showProgress();
         Call<MovieResponse> movieResponseCall = movieService.getMovieApi()
                 .getMovieResponse(url, BuildConfig.MOVIE_DB_API_KEY);
@@ -57,7 +57,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
         });
     }
 
-    public void loadMoviesFromDataBase(Cursor data) {
+    void loadMoviesFromDataBase(Cursor data) {
         List<MovieItem>favMovies = new ArrayList<>();
 
         if (data.getCount() > 0) {
@@ -66,9 +66,9 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
                         data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_NAME));
                 int movieId = data.getInt(
                         data.getColumnIndex(FavMovieContract.FavMovieEntry._ID));
-                byte[] bytes = data.getBlob(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_IMAGE));
+                byte[] bytes = data.getBlob(data.getColumnIndex(FavMovieContract.FavMovieEntry.COLUMN_POSTER_PATH));
                 MovieItem movieItem = new MovieItem();
-                movieItem.setBytes(bytes);
+                movieItem.setBytesPosterPath(bytes);
                 favMovies.add(movieItem);
                 Log.e("provider", name + " = " + movieId);
             }

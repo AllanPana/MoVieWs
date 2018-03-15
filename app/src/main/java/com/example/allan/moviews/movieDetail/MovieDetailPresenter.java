@@ -14,7 +14,7 @@ import com.example.allan.moviews.model.ReviewResponse;
 import com.example.allan.moviews.model.Trailer;
 import com.example.allan.moviews.model.TrailerResponse;
 import com.example.allan.moviews.model.favData.FavMovieContract;
-import com.example.allan.moviews.util.ImageUtil;
+import com.example.allan.moviews.util.MovieAppUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +37,7 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
     private static final String NO_REVIEWS = "Sorry, No movie review available at the moment";
     private MovieItem movieItem;
     private MovieService movieService;
+    private List<Review> list = new ArrayList<>();
 
     MovieDetailPresenter(MovieService movieService, MovieItem movieItem) {
         this.movieService = movieService;
@@ -53,8 +54,10 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         getmMvpView().displayMovieRating((movieItem.getVoteAverage() / 2) + "/5",
                 (float) (movieItem.getVoteAverage() / 2));
 
-        String s = movieItem.getPosterPath();
-        getmMvpView().setImageBitmap(s); // todo copy it in mainpresenter
+        String posterPath = movieItem.getPosterPath();
+        String backDropPath = movieItem.getBackdropPath();
+        getmMvpView().setPosterPathBitmap(posterPath);
+        getmMvpView().setBackDropPathPathBitmap(backDropPath);
     }
 
     /**
@@ -88,16 +91,16 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         final HashMap<String, List<String>> expandableListDetail = new HashMap<>();
 
         final List<String> reviewList = new ArrayList<>();
-        List<String> sysnopsisList = new ArrayList<>();
-        sysnopsisList.add(movieItem.getOverview());
-        expandableListDetail.put(PLOT_SYNOPSIS, sysnopsisList);
+        List<String> synopsisList = new ArrayList<>();
+        synopsisList.add(movieItem.getOverview());
+        expandableListDetail.put(PLOT_SYNOPSIS, synopsisList);
 
         Call<ReviewResponse> reviewResponseCall = movieService.getMovieApi()
                 .getReviewResponse(movieItem.getId(), BuildConfig.MOVIE_DB_API_KEY);
         reviewResponseCall.enqueue(new Callback<ReviewResponse>() {
             @Override
             public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-                List<Review> list = response.body().getResults();
+                list = response.body().getResults();
                 for (Review review : list) {
                     reviewList.add(review.getAuthor()
                             + "\n\n" + review.getContent());
@@ -124,19 +127,23 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
 
 
     /**
-     *
      * @param contentResolver the ContentResolver to access the Sharedpreference data
      */
-    void addMovieToFav(ContentResolver contentResolver){
+    void addMovieToFav(ContentResolver contentResolver) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FavMovieContract.FavMovieEntry._ID, movieItem.getId());
         contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_NAME, movieItem.getOriginalTitle());
-        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_IMAGE, ImageUtil.getBytes(getmMvpView().getBitmap()));
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_POSTER_PATH, MovieAppUtil.getBytes(getmMvpView().getPosterPathBitmap()));
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_BACK_DROP_PATH, MovieAppUtil.getBytes(getmMvpView().getBackDropPathBitmap()));
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_SYNOPSIS, movieItem.getOverview());
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_REVIEW, MovieAppUtil.getStringFromList(list));
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_VOTE_AVERAGE, movieItem.getVoteAverage());
+        contentValues.put(FavMovieContract.FavMovieEntry.COLUMN_RELEASE_DATE, movieItem.getReleaseDate());
 
         Uri uri = contentResolver.insert(FavMovieContract.FavMovieEntry.CONTENT_URI, contentValues);
 
-        if (uri != null){
-            Log.e("allan uri" , uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_NAME));
+        if (uri != null) {
+            Log.e("allan uri", uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_NAME));
 
         }
     }

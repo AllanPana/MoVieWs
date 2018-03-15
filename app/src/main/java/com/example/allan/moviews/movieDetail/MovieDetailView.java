@@ -47,14 +47,27 @@ interface MovieDetailView extends MVPView {
 
     /**
      *
-     * @return bitmap image
+     * @return bitmap of posterpath image
      */
-    Bitmap getBitmap();
+    Bitmap getPosterPathBitmap();
 
     /**
      * This method will set the image from dbmovie into bitmap to be saved into the Database
      *
-     * @param url of an image from DBMovie
+     * @param url of a poster path image from DBMovie
      */
-    void setImageBitmap(String url);
+    void setPosterPathBitmap(String url);
+
+    /**
+     *
+     * @return bitmap of backdrop path image
+     */
+    Bitmap getBackDropPathBitmap();
+
+    /**
+     * This method will set the image from dbmovie into bitmap to be saved into the Database
+     *
+     * @param url of a backdrop path path image from DBMovie
+     */
+    void setBackDropPathPathBitmap(String url);
 }
