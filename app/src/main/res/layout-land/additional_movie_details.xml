@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_thumb_nail"
+        android:layout_width="@dimen/movie_details_image_thumbnail_width"
+        android:layout_height="@dimen/movie_details_image_thumbnail_height"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/app_standard_margin"
+        android:layout_marginTop="@dimen/app_standard_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="@dimen/app_standard_margin" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginLeft="@dimen/app_standard_margin"
+        android:layout_marginStart="@dimen/app_standard_margin"
+        android:numStars="5"
+        android:stepSize=".5"
+        app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rating_label" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/app_small_margin"
+        android:layout_marginStart="@dimen/app_small_margin"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/ratingBar"
+        app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+    <TextView
+        android:id="@+id/tv_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/app_standard_margin"
+        android:layout_marginStart="@dimen/app_standard_margin"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail"
+        app:layout_constraintTop_toBottomOf="@+id/tv_release_date_label" />
+
+    <com.example.allan.moviews.movieDetail.NonScrollExpandableListView
+        android:id="@+id/expandableListViewForDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_standard_margin"
+        android:layout_marginBottom="@dimen/app_standard_margin"
+        android:layout_marginEnd="@dimen/app_standard_margin"
+        android:layout_marginStart="@dimen/app_standard_margin"
+        android:background="@color/colorAccent"
+        android:childDivider="@color/colorPrimaryLight"
+        android:divider="@color/colorPrimaryLight"
+        android:dividerHeight="@dimen/expandable_list_view_divider"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/iv_thumb_nail"
+        app:layout_constraintTop_toBottomOf="@id/tv_release_date" />
+
+    <TextView
+        android:id="@+id/tv_release_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/app_standard_margin"
+        android:layout_marginStart="@dimen/app_standard_margin"
+        android:layout_marginTop="16dp"
+        android:text="@string/release_date_label"
+        android:textColor="@color/logo_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <TextView
+        android:id="@+id/tv_rating_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/rating_label"
+        android:textColor="@color/logo_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toEndOf="@+id/iv_thumb_nail"
+        app:layout_constraintTop_toTopOf="@+id/iv_thumb_nail" />
+
+    <ImageView
+        android:id="@+id/imageView_fav"
+        android:layout_width="@dimen/fav_size"
+        android:layout_height="@dimen/fav_size"
+        android:layout_marginEnd="@dimen/app_standard_margin"
+        android:layout_marginStart="@dimen/app_standard_margin"
+        app:layout_constraintBottom_toBottomOf="@id/tv_release_date"
+        app:layout_constraintStart_toEndOf="@id/ratingBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_favorite" />
+
+    <TextView
+        android:id="@+id/tv_add_to_fav"
+        android:layout_width="@dimen/fav_size"
+        android:layout_height="@dimen/fav_size"
+        android:layout_marginBottom="@dimen/app_small_margin"
+        android:gravity="center"
+        android:text="@string/add_to_fav"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/tv_add_to_fav"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_fav"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_fav"
+        app:layout_constraintStart_toStartOf="@+id/imageView_fav"
+        app:layout_constraintTop_toTopOf="@+id/imageView_fav"/>
+
+    <!--android:animateLayoutChanges="true"-->
+
+</android.support.constraint.ConstraintLayout>
