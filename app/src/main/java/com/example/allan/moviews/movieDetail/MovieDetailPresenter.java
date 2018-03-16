@@ -49,7 +49,7 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
     }
 
     void setAdditionalMovieDetails() {
-        //getmMvpView().loadThumbnailImage(movieItem.getPosterPath());
+        getmMvpView().loadThumbnailImage(movieItem.getPosterPath());
         getmMvpView().displayReleaseDate(movieItem.getReleaseDate());
         getmMvpView().displayMovieRating((movieItem.getVoteAverage() / 2) + "/5",
                 (float) (movieItem.getVoteAverage() / 2));
@@ -85,9 +85,10 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
     }
 
     /**
+     * data come from server
      * Set the hashmap value of Synopsis and Reviews details to be used for ExpandableListView
      */
-    void setExpandableListMovieData() {
+    void setExpandableListMovieDataFromServer() {
         final HashMap<String, List<String>> expandableListDetail = new HashMap<>();
 
         final List<String> reviewList = new ArrayList<>();
@@ -125,6 +126,38 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         });
     }
 
+
+    /**
+     * data come from database
+     * Set the hashmap value of Synopsis and Reviews details to be used for ExpandableListView
+     */
+    void setExpandableListMovieDataFromDataBase() {
+        final HashMap<String, List<String>> expandableListDetail = new HashMap<>();
+
+        final List<String> reviewList = new ArrayList<>();
+        List<String> synopsisList = new ArrayList<>();
+        synopsisList.add(movieItem.getOverview());
+        expandableListDetail.put(PLOT_SYNOPSIS, synopsisList);
+
+        list = MovieAppUtil.stringList(movieItem.getStrReview());
+
+        for (Review review : list) {
+            reviewList.add(review.getAuthor()
+                    + "\n\n" + review.getContent());
+        }
+
+        if (list.isEmpty()) {
+            reviewList.add(NO_REVIEWS);
+        }
+
+        expandableListDetail.put(MOVIE_REVIEWS, reviewList);
+        List<String> sortedList = new ArrayList<>(expandableListDetail.keySet());
+        Collections.sort(sortedList);
+        getmMvpView().displayExpandableListForMovieDetail(
+                sortedList,
+                expandableListDetail);
+        getmMvpView().displayImageviewIfNoVideo(MovieAppUtil.getImage(movieItem.getBytesBackDropPath()));
+    }
 
     /**
      * @param contentResolver the ContentResolver to access the Sharedpreference data

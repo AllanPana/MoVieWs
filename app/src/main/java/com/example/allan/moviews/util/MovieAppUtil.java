@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 
+import com.example.allan.moviews.model.Review;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -34,14 +35,14 @@ public class MovieAppUtil {
 
 
     //convert ArrayList to string to store into database
-    public static <T> String getStringFromList(List<T> list){
+    public static String getStringFromList(List<Review> list){
         Gson gson = new Gson();
         return gson.toJson(list);
     }
 
     //convert string from database  to arraylist
-    public static <T> List<T> stringList(String stringJson){
-        Type type = new TypeToken<ArrayList<T>>(){}.getType();
+    public static  List<Review> stringList(String stringJson){
+        Type type = new TypeToken<ArrayList<Review>>(){}.getType();
         return new Gson().fromJson(stringJson, type);
     }
 }

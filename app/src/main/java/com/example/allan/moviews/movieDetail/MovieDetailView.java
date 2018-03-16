@@ -36,6 +36,12 @@ interface MovieDetailView extends MVPView {
      */
     void displayMovieRating(String strMovieRating, float movierating);
 
+    /**
+     *
+     * @param bitmap to be set into ImageView if no video available
+     */
+    void displayImageviewIfNoVideo(Bitmap bitmap);
+
 
     /**
      *

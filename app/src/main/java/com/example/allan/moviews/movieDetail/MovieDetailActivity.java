@@ -15,7 +15,7 @@ import com.example.allan.moviews.model.MovieItem;
 public class MovieDetailActivity extends AppCompatActivity {
 
     private static final String MOVIE_ITEM = "movie_item";
-    private static final String IS_FAVORITE = "isFav";
+    public static final String IS_FAVORITE = "isFav";
     private static MovieItem movie;
     private static boolean isfav;
 

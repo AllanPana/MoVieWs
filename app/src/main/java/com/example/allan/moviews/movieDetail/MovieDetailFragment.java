@@ -18,6 +18,7 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseFragment;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.util.MovieAppUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
@@ -57,15 +58,21 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     ExpandableListView expandableListView;
     @BindView(R.id.tv_add_to_fav)
     TextView tvAddToFab;
+    @BindView(R.id.imageView_fav)
+    ImageView imageViewAddToFav;
+    @BindView(R.id.iv_no_video)
+    ImageView imageViewIfNoVideo;
 
     private Bitmap posterPathBitmap;
     private Bitmap backDropPathBitmap;
+    private boolean isFav;
 
     public static MovieDetailFragment newFragmentinstance(MovieItem movieItem, boolean isFav) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
         //movie = movieItem;
         Bundle args = new Bundle();
         args.putParcelable(MOVIE_ITEM, movieItem);
+        args.putBoolean(MovieDetailActivity.IS_FAVORITE, isFav);
         movieDetailFragment.setArguments(args);
         return movieDetailFragment;
 
@@ -74,14 +81,25 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     @Override
     public void onViewCreated() {
         //Get the parcelable args(MovieItem) from the MovieDetailActivity
-        movie = getArguments().getParcelable(MOVIE_ITEM);
+        Bundle args = getArguments();
+        movie = args.getParcelable(MOVIE_ITEM);
+        isFav = args.getBoolean(MovieDetailActivity.IS_FAVORITE, false);
 
-        tvAddToFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                movieDetailPresenter.addMovieToFav(getActivity().getContentResolver());
-            }
-        });
+        if (isFav){
+            tvAddToFab.setVisibility(View.GONE);
+        }else {
+            tvAddToFab.setVisibility(View.VISIBLE);
+            tvAddToFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //todo check if item is already added i db
+                    imageViewAddToFav.animate().rotationBy(720);
+                    movieDetailPresenter.addMovieToFav(getActivity().getContentResolver());
+                }
+            });
+        }
+
+
 
     }
 
@@ -97,8 +115,15 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
         movieDetailPresenter.attachView(this);
         movieDetailPresenter.setToolBar();
         movieDetailPresenter.setAdditionalMovieDetails();
-        //movieDetailPresenter.setTrailer();
-        //movieDetailPresenter.setExpandableListMovieData();
+
+        if (isFav){
+            movieDetailPresenter.setExpandableListMovieDataFromDataBase();
+
+        }else {
+            imageViewIfNoVideo.setVisibility(View.GONE);
+            movieDetailPresenter.setTrailer();
+            movieDetailPresenter.setExpandableListMovieDataFromServer();
+        }
     }
 
     @Override
@@ -152,8 +177,13 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
 
     @Override
     public void loadThumbnailImage(String imageUrl) {
-        Picasso.with(getActivity()).load(IMAGE_URL_POSTER_PATH + imageUrl)
-                .into(ivThumbNail);
+        if (isFav){
+            ivThumbNail.setImageBitmap(MovieAppUtil.getImage(movie.getBytesPosterPath()));
+        }else {
+            Picasso.with(getActivity()).load(IMAGE_URL_POSTER_PATH + imageUrl)
+                    .into(ivThumbNail);
+        }
+
     }
 
     @Override
@@ -165,6 +195,12 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
     public void displayMovieRating(String strMovieRating, float movieRating) {
         tvRating.setText((strMovieRating));
         ratingBar.setRating(movieRating);
+    }
+
+    @Override
+    public void displayImageviewIfNoVideo(Bitmap bitmap) {
+        imageViewIfNoVideo.setVisibility(View.VISIBLE);
+        imageViewIfNoVideo.setImageBitmap(bitmap);
     }
 
     @Override
