@@ -36,8 +36,8 @@ import butterknife.BindView;
 
 public class MovieDetailFragment extends BaseFragment implements MovieDetailView{
 
-    private static final String IMAGE_URL_POSTER_PATH = "http://image.tmdb.org/t/p/w185//";
-    private static final String IMAGE_URL_BACK_DROP_PATH = "http://image.tmdb.org/t/p/w300//";
+    private static final String IMAGE_URL_POSTER_PATH = "http://image.tmdb.org/t/p/w300//";
+    private static final String IMAGE_URL_BACK_DROP_PATH = "http://image.tmdb.org/t/p/w780//";
     private static final String MOVIE_ITEM = "movie_item";
     private MovieDetailPresenter movieDetailPresenter;
     private static MovieItem movie;

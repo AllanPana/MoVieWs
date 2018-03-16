@@ -86,7 +86,6 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
                 movieItem.setOriginalTitle(name);
                 movieItem.setId(movieId);
                 movieItem.setBytesPosterPath(bytesPosterPath); //has to be converted to Bitmap to be used
-                //todo fix this BufferOverflowException
                 movieItem.setBytesBackDropPath(bytesBackDropPath); //has to be converted to Bitmap to be used
                 movieItem.setOverview(synopsis);
                 movieItem.setStrReview(review); //has to be converted to ArrayList to be used

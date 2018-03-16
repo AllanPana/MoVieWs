@@ -23,7 +23,7 @@ public class MovieAppUtil {
     // convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(CompressFormat.PNG, 0, stream);
+        bitmap.compress(CompressFormat.JPEG, 70, stream); //reduce the size of byte []
         return stream.toByteArray();
     }
 
