@@ -1,4 +1,4 @@
-package com.example.allan.moviews.main;
+package com.example.allan.moviews.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,12 +12,12 @@ import java.lang.ref.WeakReference;
  * Created by Allan Pana on 09/03/18.
  * allan.pana74@gmail.com
  */
-class FavMovieLoader extends AsyncTaskLoader<Cursor> {
+public class FavMovieLoader extends AsyncTaskLoader<Cursor> {
 
     private Cursor cursorFavMovie;
     private WeakReference<Context> context;
 
-    FavMovieLoader(Context context) {
+    public FavMovieLoader(Context context) {
         super(context);
         this.context = new WeakReference<>(context);
     }

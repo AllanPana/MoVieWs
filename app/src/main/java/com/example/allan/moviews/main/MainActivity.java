@@ -8,22 +8,19 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseActivity;
 import com.example.allan.moviews.model.MovieItem;
-import com.example.allan.moviews.model.favData.FavMovieContract;
 import com.example.allan.moviews.movieDetail.MovieDetailActivity;
+import com.example.allan.moviews.util.FavMovieLoader;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,6 +60,7 @@ public class MainActivity extends BaseActivity implements MainView,
         moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         loaderManager  = getSupportLoaderManager();
+        //todo check if online
     }
 
     @Override

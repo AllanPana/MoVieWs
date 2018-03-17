@@ -1,9 +1,14 @@
 package com.example.allan.moviews.movieDetail;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +23,7 @@ import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseFragment;
 import com.example.allan.moviews.model.MovieItem;
+import com.example.allan.moviews.model.favData.FavMovieContract;
 import com.example.allan.moviews.util.MovieAppUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -35,7 +41,8 @@ import butterknife.BindView;
  * allan.pana74@gmail.com
  */
 
-public class MovieDetailFragment extends BaseFragment implements MovieDetailView{
+public class MovieDetailFragment extends BaseFragment
+        implements MovieDetailView, LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String IMAGE_URL_POSTER_PATH = "http://image.tmdb.org/t/p/w300//";
     private static final String IMAGE_URL_BACK_DROP_PATH = "http://image.tmdb.org/t/p/w780//";
@@ -94,6 +101,14 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
                 public void onClick(View v) {
                     //todo check if item is already added i db
                     imageViewAddToFav.animate().rotationBy(720);
+                    ContentResolver  contentResolver = getActivity().getContentResolver();
+                    Cursor cursor = contentResolver.query(FavMovieContract.FavMovieEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            null);
+                    //cursor.getInt(FavMovieContract.FavMovieEntry._ID)
+
                     movieDetailPresenter.addMovieToFav(getActivity().getContentResolver());
                 }
             });
@@ -254,4 +269,18 @@ public class MovieDetailFragment extends BaseFragment implements MovieDetailView
         }).start();
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
 }

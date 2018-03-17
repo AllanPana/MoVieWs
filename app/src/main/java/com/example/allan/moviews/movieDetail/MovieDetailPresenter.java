@@ -2,6 +2,7 @@ package com.example.allan.moviews.movieDetail;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -179,5 +180,24 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
             Log.e("allan uri", uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_BACK_DROP_PATH));
 
         }
+    }
+
+
+    /**
+     *
+     * @param cursor of movie list
+     * @return true if list of movies contain movie to be added
+     */
+    boolean isMovieAlreadyAdded(Cursor cursor){
+        List<MovieItem>favMovies = new ArrayList<>();
+        boolean isAdded = false;
+
+        //todo
+        //get the list of movies from the provider
+        //add each movies into the list
+        //check if movie to be added is already in the list
+
+
+        return favMovies.contains(movieItem);
     }
 }
