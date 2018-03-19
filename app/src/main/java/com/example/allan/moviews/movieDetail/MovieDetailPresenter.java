@@ -194,6 +194,7 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
                 new String[]{movieItem.getId().toString()},
                 null);
 
+        //if the query data is greater than zero it means that its already ithe database so it will return true
         return cursor.getCount() > 0;
     }
 }

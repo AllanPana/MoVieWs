@@ -17,5 +17,10 @@ interface MainView extends MVPView {
      */
     void showListOfMovies(List<MovieItem> results);
 
+    /**
+     *
+     * @param results list of movies
+     */
+    void showNoDataAddedYet(List<MovieItem> results);
 
 }

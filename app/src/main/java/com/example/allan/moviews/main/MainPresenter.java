@@ -49,6 +49,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 getmMvpView().hideProgress();
                 movieItems = response.body().getResults();
+                getmMvpView().showNoDataAddedYet(movieItems);
                 getmMvpView().showListOfMovies(movieItems);
                 //Log.e("allan", movieItems.get(0).getBackdropPath());
             }
@@ -99,6 +100,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
             }
         }
         movieItems = favMovies;
+        getmMvpView().showNoDataAddedYet(movieItems);
         getmMvpView().showListOfMovies(movieItems);
     }
 

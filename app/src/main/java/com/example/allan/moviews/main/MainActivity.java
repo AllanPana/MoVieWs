@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.allan.moviews.R;
 import com.example.allan.moviews.apiService.MovieService;
@@ -51,6 +52,8 @@ public class MainActivity extends BaseActivity implements MainView,
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_no_data_added)
+    TextView tvNoMovieAddedYet;
     private boolean isfav;
     private LoaderManager loaderManager;
 
@@ -134,6 +137,15 @@ public class MainActivity extends BaseActivity implements MainView,
         recyclerView.setAdapter(movieAdapter);
         mainPresenter.setToolBar(moviePrefsHelper.getSortMovie());
 
+    }
+
+    @Override
+    public void showNoDataAddedYet(List<MovieItem> results) {
+        if (results.isEmpty() || results.size() == 0){
+            tvNoMovieAddedYet.setVisibility(View.VISIBLE);
+        }else {
+            tvNoMovieAddedYet.setVisibility(View.GONE);
+        }
     }
 
     @Override
