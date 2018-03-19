@@ -177,27 +177,23 @@ class MovieDetailPresenter<T extends MovieDetailView> extends BasePresenter<T> {
         Uri uri = contentResolver.insert(FavMovieContract.FavMovieEntry.CONTENT_URI, contentValues);
 
         if (uri != null) {
-            Log.e("allan uri", uri.toString() + "\n" + contentValues.getAsString(FavMovieContract.FavMovieEntry.COLUMN_BACK_DROP_PATH));
+            Log.e("allan uri", uri.toString() );
 
         }
     }
 
 
     /**
-     *
-     * @param cursor of movie list
-     * @return true if list of movies contain movie to be added
+     * Verify if movie item is already added in db
+     * @param contentResolver the ContentResolver to access the Sharedpreference data
      */
-    boolean isMovieAlreadyAdded(Cursor cursor){
-        List<MovieItem>favMovies = new ArrayList<>();
-        boolean isAdded = false;
+    boolean isMovieAlreadyAdded(ContentResolver contentResolver){
+        Cursor cursor = contentResolver.query(FavMovieContract.FavMovieEntry.CONTENT_URI,
+                null,
+                FavMovieContract.FavMovieEntry._ID+"=?",
+                new String[]{movieItem.getId().toString()},
+                null);
 
-        //todo
-        //get the list of movies from the provider
-        //add each movies into the list
-        //check if movie to be added is already in the list
-
-
-        return favMovies.contains(movieItem);
+        return cursor.getCount() > 0;
     }
 }

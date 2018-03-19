@@ -75,7 +75,8 @@ public class FavMovieContentProvider extends ContentProvider{
                 break;
             case FAV_MOVIE_WITH_ID:
 
-                String id = uri.getPathSegments().get(1);
+                //String id = uri.getPathSegments().get(1);
+                String id = uri.getLastPathSegment();
                 String mySelection = "_id=?";
                 String [] mySelectionArgs = new String[]{id};
 
@@ -86,7 +87,7 @@ public class FavMovieContentProvider extends ContentProvider{
                         null,
                         null,
                         sortOrder);
-
+                break;
             // Default exception
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

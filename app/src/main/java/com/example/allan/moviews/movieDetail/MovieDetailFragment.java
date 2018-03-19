@@ -12,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BaseFragment;
 import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.model.favData.FavMovieContract;
+import com.example.allan.moviews.util.FavMovieLoader;
 import com.example.allan.moviews.util.MovieAppUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -42,7 +44,7 @@ import butterknife.BindView;
  */
 
 public class MovieDetailFragment extends BaseFragment
-        implements MovieDetailView, LoaderManager.LoaderCallbacks<Cursor>{
+        implements MovieDetailView{
 
     private static final String IMAGE_URL_POSTER_PATH = "http://image.tmdb.org/t/p/w300//";
     private static final String IMAGE_URL_BACK_DROP_PATH = "http://image.tmdb.org/t/p/w780//";
@@ -73,6 +75,7 @@ public class MovieDetailFragment extends BaseFragment
     private Bitmap posterPathBitmap;
     private Bitmap backDropPathBitmap;
     private boolean isFav;
+    private  boolean isMovieAlreadyAdded;
 
     public static MovieDetailFragment newFragmentinstance(MovieItem movieItem, boolean isFav) {
         MovieDetailFragment movieDetailFragment = new MovieDetailFragment();
@@ -91,30 +94,6 @@ public class MovieDetailFragment extends BaseFragment
         Bundle args = getArguments();
         movie = args.getParcelable(MOVIE_ITEM);
         isFav = args.getBoolean(MovieDetailActivity.IS_FAVORITE, false);
-
-        if (isFav){
-            tvAddToFab.setVisibility(View.GONE);
-        }else {
-            tvAddToFab.setVisibility(View.VISIBLE);
-            tvAddToFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //todo check if item is already added i db
-                    imageViewAddToFav.animate().rotationBy(720);
-                    ContentResolver  contentResolver = getActivity().getContentResolver();
-                    Cursor cursor = contentResolver.query(FavMovieContract.FavMovieEntry.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            null);
-                    //cursor.getInt(FavMovieContract.FavMovieEntry._ID)
-
-                    movieDetailPresenter.addMovieToFav(getActivity().getContentResolver());
-                }
-            });
-        }
-
-
 
     }
 
@@ -139,6 +118,25 @@ public class MovieDetailFragment extends BaseFragment
             movieDetailPresenter.setTrailer();
             movieDetailPresenter.setExpandableListMovieDataFromServer();
         }
+
+        isMovieAlreadyAdded = movieDetailPresenter.isMovieAlreadyAdded(getActivity().getContentResolver());
+
+        //check if item is already added in db
+        if (isFav || isMovieAlreadyAdded){
+            tvAddToFab.setVisibility(View.GONE);
+        }else {
+            tvAddToFab.setVisibility(View.VISIBLE);
+            tvAddToFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageViewAddToFav.animate().rotationBy(720);
+                    movieDetailPresenter.addMovieToFav(getActivity().getContentResolver());
+                    getActivity().finish();
+                }
+            });
+        }
+
+
     }
 
     @Override
@@ -269,18 +267,4 @@ public class MovieDetailFragment extends BaseFragment
         }).start();
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 }
