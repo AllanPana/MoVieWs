@@ -9,6 +9,8 @@
     <string name="release_date_label">Release date :</string>
     <string name="rating_label">Rating :</string>
     <string name="add_to_fav">Add \nto \nFav</string>
+    <string name="no_movie_added_yet_in_favorite">No movie added yet in favorite</string>
+    <string name="off_line">No internet Connection</string>
 
 
 </resources>

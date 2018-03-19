@@ -1,6 +1,7 @@
 package com.example.allan.moviews.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,18 @@ import com.google.gson.reflect.TypeToken;
 
 public class MovieAppUtil {
 
+
+    //Ping for the main name servers to check if android device has internet connectivity
+    public static boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
+    }
 
     // convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {

@@ -20,6 +20,7 @@ import com.example.allan.moviews.base.BaseActivity;
 import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.movieDetail.MovieDetailActivity;
 import com.example.allan.moviews.util.FavMovieLoader;
+import com.example.allan.moviews.util.MovieAppUtil;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
 import java.util.List;
@@ -33,7 +34,7 @@ import butterknife.BindView;
  */
 public class MainActivity extends BaseActivity implements MainView,
         MovieAdapter.MovieOnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener,
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     //private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String TOP_RATED = "movie/top_rated";
@@ -52,8 +53,8 @@ public class MainActivity extends BaseActivity implements MainView,
     RecyclerView recyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_no_data_added)
-    TextView tvNoMovieAddedYet;
+    @BindView(R.id.tv_utility_txt)
+    TextView tvUtilityText;
     private boolean isfav;
     private LoaderManager loaderManager;
 
@@ -62,8 +63,8 @@ public class MainActivity extends BaseActivity implements MainView,
         sharedPreferences = getSharedPreferences(MoviePrefsHelper.MOVIE_PREFS, MODE_PRIVATE);
         moviePrefsHelper = new MoviePrefsHelper(sharedPreferences);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        loaderManager  = getSupportLoaderManager();
-        //todo check if online
+        loaderManager = getSupportLoaderManager();
+
     }
 
     @Override
@@ -75,10 +76,18 @@ public class MainActivity extends BaseActivity implements MainView,
     public void setPresenter() {
         mainPresenter = new MainPresenter(new MovieService(), moviePrefsHelper);
         mainPresenter.attachView(this);
+
+        //show only fav movies when not online
+        if (!(MovieAppUtil.isOnline())) {
+            tvUtilityText.setVisibility(View.VISIBLE);
+            tvUtilityText.setText(R.string.off_line);
+            mainPresenter.setMovieUrl(FAVORITE);
+        }
+
         String movieSort = moviePrefsHelper.getSortMovie();
-        if (movieSort.equals(FAVORITE)){
+        if (movieSort.equals(FAVORITE)) {
             startLoader(loaderManager);
-        }else {
+        } else {
             mainPresenter.loadMoviesFromServer(moviePrefsHelper.getSortMovie());
         }
     }
@@ -100,10 +109,10 @@ public class MainActivity extends BaseActivity implements MainView,
         } else if (itemID == R.id.action_movie_top_rated) {
             isfav = false;
             mainPresenter.setMovieUrl(TOP_RATED);
-        }else if (itemID == R.id.action_movie_favorite) {
+        } else if (itemID == R.id.action_movie_favorite) {
             isfav = true;
             mainPresenter.setMovieUrl(FAVORITE);
-           startLoader(loaderManager);
+            startLoader(loaderManager);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -140,11 +149,15 @@ public class MainActivity extends BaseActivity implements MainView,
     }
 
     @Override
-    public void showNoDataAddedYet(List<MovieItem> results) {
-        if (results.isEmpty() || results.size() == 0){
-            tvNoMovieAddedYet.setVisibility(View.VISIBLE);
-        }else {
-            tvNoMovieAddedYet.setVisibility(View.GONE);
+    public void setUpUtilityTextView(List<MovieItem> results) {
+        if (results.isEmpty() || results.size() == 0) {
+            tvUtilityText.setVisibility(View.VISIBLE);
+            tvUtilityText.setText(R.string.no_movie_added_yet_in_favorite);
+        }else if (!(MovieAppUtil.isOnline())){
+            tvUtilityText.setVisibility(View.VISIBLE);
+                tvUtilityText.setText(R.string.off_line);
+        } else {
+            tvUtilityText.setVisibility(View.GONE);
         }
     }
 
@@ -169,9 +182,9 @@ public class MainActivity extends BaseActivity implements MainView,
     //Listerner for the SharedPreference when preference value changed
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (isfav){
-           startLoader(loaderManager);
-        }else {
+        if (isfav) {
+            startLoader(loaderManager);
+        } else {
             mainPresenter.loadMoviesFromServer(moviePrefsHelper.getSortMovie());
         }
     }
@@ -185,7 +198,7 @@ public class MainActivity extends BaseActivity implements MainView,
     @Override
     public void onLoadFinished(Loader loader, Cursor data) {
 
-       mainPresenter.loadMoviesFromDataBase(data);
+        mainPresenter.loadMoviesFromDataBase(data);
     }
 
     @Override
@@ -194,17 +207,14 @@ public class MainActivity extends BaseActivity implements MainView,
     }
 
     /**
-     *
      * @param loaderManager the loadermanager to start or initialized
      */
-    void startLoader(LoaderManager loaderManager){
+    void startLoader(LoaderManager loaderManager) {
         isfav = true;
-        if(loaderManager.getLoader(FAV_MOVIE_LOADER_ID) == null){
+        if (loaderManager.getLoader(FAV_MOVIE_LOADER_ID) == null) {
             loaderManager.initLoader(FAV_MOVIE_LOADER_ID, null, this);
-        }else {
+        } else {
             loaderManager.restartLoader(FAV_MOVIE_LOADER_ID, null, this);
         }
-
-        //movieAdapter.notifyDataSetChanged();
     }
 }

@@ -8,9 +8,7 @@ import com.example.allan.moviews.apiService.MovieService;
 import com.example.allan.moviews.base.BasePresenter;
 import com.example.allan.moviews.model.MovieItem;
 import com.example.allan.moviews.model.MovieResponse;
-import com.example.allan.moviews.model.Review;
 import com.example.allan.moviews.model.favData.FavMovieContract;
-import com.example.allan.moviews.util.MovieAppUtil;
 import com.example.allan.moviews.util.MoviePrefsHelper;
 
 import java.util.ArrayList;
@@ -49,9 +47,8 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 getmMvpView().hideProgress();
                 movieItems = response.body().getResults();
-                getmMvpView().showNoDataAddedYet(movieItems);
+                getmMvpView().setUpUtilityTextView(movieItems);
                 getmMvpView().showListOfMovies(movieItems);
-                //Log.e("allan", movieItems.get(0).getBackdropPath());
             }
 
             @Override
@@ -64,7 +61,7 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
 
     //List of movies from db
     void loadMoviesFromDataBase(Cursor data) {
-        List<MovieItem>favMovies = new ArrayList<>();
+        List<MovieItem> favMovies = new ArrayList<>();
 
         if (data.getCount() > 0) {
             while (data.moveToNext()) {
@@ -95,12 +92,12 @@ class MainPresenter<T extends MainView> extends BasePresenter<T> {
 
                 favMovies.add(movieItem);
                 Log.e("provider", name + " = " + movieId + " \n poster = " + bytesPosterPath.length + "\n backdrop = " + bytesBackDropPath.length
-                + "\n release date = " + releaseDate);
+                        + "\n release date = " + releaseDate);
 
             }
         }
         movieItems = favMovies;
-        getmMvpView().showNoDataAddedYet(movieItems);
+        getmMvpView().setUpUtilityTextView(movieItems);
         getmMvpView().showListOfMovies(movieItems);
     }
 

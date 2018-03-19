@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <include layout="@layout/toolbar_layout"
-            ></include>
+        <include layout="@layout/toolbar_layout"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -24,10 +23,10 @@
         android:scrollbars="vertical"/>
 
     <TextView
-        android:id="@+id/tv_no_data_added"
+        android:id="@+id/tv_utility_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No movie added yet in favorite"
+        android:text="@string/no_movie_added_yet_in_favorite"
         android:textColor="@color/logo_color"
         android:layout_gravity="center"
         android:visibility="gone"/>
