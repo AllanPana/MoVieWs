@@ -1,5 +1,6 @@
 package com.example.allan.moviews.model;
 
+import java.util.Collections;
 import java.util.List;
 
 import android.os.Parcel;
@@ -45,7 +46,7 @@ public class MovieItem implements Parcelable{
     private String originalTitle;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = null;
+    private List<Integer> genreIds = Collections.emptyList();
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
